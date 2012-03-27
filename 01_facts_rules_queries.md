@@ -7,7 +7,7 @@ Notes for [chapter 1](http://www.learnprolognow.org/lpnpage.php?pagetype=html&pa
 
 I use [swipl](http://www.swi-prolog.org/) as my prolog interpreter.
 
-Chapter 1 - Facts, Rules and other Queries
+Chapter 1 - Facts, Rules and Other Queries
 ------------------------------------------
 
 1.1 Some Simple Examples
