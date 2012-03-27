@@ -597,11 +597,11 @@ Everything in a box is either a query or a goal.
 * Whenever Prolog has a list of goals, it tries to satisfy them one by one, working through the
   list left-to-right.
 
-* The leftmost goal is __f(_G34)__, which reads: 'I want an individual with property f'. Can we
+* The leftmost goal is __f(\_G34)__, which reads: 'I want an individual with property f'. Can we
   satisfy this? Prolog tries to by searching through the knowledge base from top to bottom.
 
 * The first item Prolog finds which unifies with this goal is __f(a)__. This satisfies
-  __f(_G34)__ and we are left with two remaining goals. Our goals now look like:-
+  __f(\_G34)__ and we are left with two remaining goals. Our goals now look like:-
 
     g(a), h(a)
 
@@ -628,7 +628,7 @@ Everything in a box is either a query or a goal.
   alternatives.
 
 * There is nothing else in the knowledge base which unifies with __g(a)__, but there is another
-  way of unifying __(f_G34)__.
+  way of unifying __(f\_G34)__.
 
 * Points in the search where there are several alternative ways of unifying a goal against the
   knowledge base are called 'choice points'. Prolog keeps a track of these as it goes, so if a
@@ -641,8 +641,8 @@ Everything in a box is either a query or a goal.
     f(_G34),g(_G34),h(_G34).
 
 * Prolog must now redo this work. First it must try to re-satisfy the first goal by searching
-  further in the knowledge base. It turns out that it can do it by unifying __f(_G34)__ with
-  __f(b)__. This satisfies __f(_G34)__ and instantiates __X__ to __b__, so the remaining goal
+  further in the knowledge base. It turns out that it can do it by unifying __f(\_G34)__ with
+  __f(b)__. This satisfies __f(\_G34)__ and instantiates __X__ to __b__, so the remaining goal
   list is:-
 
     g(b),h(b).
@@ -704,9 +704,10 @@ Everything in a box is either a query or a goal.
 
     loves(_G5,_G6),loves(_G7,_G6).
 
-* There are two ways of unifying __loves(_G5,_G6)__ against the knowledge base - all-in-all
-  there are four leaf nodes with an empty goal list, which means there are four solutions to
-  the problem:-
+* There are two ways of unifying __loves(\_G5,\_G6)__ against the knowledge base:-
+
+All-in-all there are four leaf nodes with an empty goal list, which means there are four
+  solutions to the problem:-
 
 1. X = _G5 = vincent, Y = _G7 = vincent.
 2. X = _G5 = vincent, Y = _G7 = marcellus.
