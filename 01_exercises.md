@@ -1,3 +1,11 @@
+<link href="http://kevinburke.bitbucket.org/markdowncss/markdown.css" rel="stylesheet"></link>
+
+Learn Prolog Now!
+=================
+
+Exercises/Chapter 1 - Facts, Rules and Other Queries
+----------------------------------------------------
+
 1.3 Exercises
 -------------
 
