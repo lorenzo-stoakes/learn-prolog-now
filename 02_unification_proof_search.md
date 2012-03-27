@@ -403,3 +403,52 @@ All-in-all there are four leaf nodes with an empty goal list, which means there 
 2. X = _G5 = vincent, Y = _G7 = marcellus.
 3. X = _G5 = marcellus, Y = _G7 = vincent.
 4. X = _G5 = marcellus, Y = _G7 = marcellus.
+
+2.4 Practical Session
+---------------------
+
+Consider the following knowledge base:-
+
+    f(a).
+    f(b).
+
+    g(a).
+    g(b).
+
+    h(b).
+
+    k(X):- f(X), g(X), h(X).
+
+We can trace through using:-
+
+    ?- trace.
+
+Which gives us:-
+
+    ?- trace.
+    true.
+
+    [trace]  ?- k(X).
+       Call: (6) k(_G366) ? creep
+       Call: (7) f(_G366) ? creep
+       Exit: (7) f(a) ? creep
+       Call: (7) g(a) ? creep
+       Exit: (7) g(a) ? creep
+       Call: (7) h(a) ? creep
+       Fail: (7) h(a) ? creep
+       Redo: (7) f(_G366) ? creep
+       Exit: (7) f(b) ? creep
+       Call: (7) g(b) ? creep
+       Exit: (7) g(b) ? creep
+       Call: (7) h(b) ? creep
+       Exit: (7) h(b) ? creep
+       Exit: (6) k(b) ? creep
+    X = b.
+
+(Pressing enter to step through at each step).
+
+We can turn it off thus:-
+
+    [trace]  ?- notrace.
+    true.
+
