@@ -240,3 +240,92 @@ __R = \_G378 = succ(succ(succ(succ(succ(0)))))__.
 * The search tree:-
 
 <img src="http://www.learnprolognow.org/html/chap3-pspic2.ps.png" />
+
+3.2 Rule Ordering, Goal Ordering, and Termination
+-------------------------------------------------
+
+* The idea of logical programming is that the task of the programmer is to simply describe
+  problems. The programmer writes down, in the language of logic, a declarative specification
+  (i.e. knowledge base) which *describes* the situation of interest, and to get information the
+  programmer simply asks questions, the logic programming system figures out how to get the
+  answer.
+
+* That's the general idea, and Prolog has taken some important steps in that direction, but it
+  is not actually a full logic programming language - if you only think in terms of the
+  declarative meaning of a programming language, then you're in for a very tough time.
+
+* Prolog has a very specific way of working out answers to queries - it searches the KB from
+  top to bottom, clauses from left to right, and uses backtracking to recover from bad
+  choices. These *procedural* aspects have a very important influence on what *actually
+  happens* when you make a query. There can be fireworks if things are broken, e.g. __p :- p__.
+
+* We can see how knowledge bases can express the same thing *declaratively*, but behave very
+  differently.
+
+Let's look at our previously described descendent program (descend1.prolog):-
+
+    child(anne,bridget).
+    child(bridget,caroline).
+    child(caroline,donna).
+    child(donna,emily).
+
+    descend(X,Y) :- child(X,Y).
+    descend(X,Y) :- child(X,Z),
+        descend(Z,Y).
+
+Now let's make a single change by reordering the __descend__ rules (descend2.prolog):-
+
+    child(anne,bridget).
+    child(bridget,caroline).
+    child(caroline,donna).
+    child(donna,emily).
+
+    descend(X,Y) :- child(X,Z),
+        descend(Z,Y).
+    descend(X,Y) :- child(X,Y).
+
+* Actually, nothing has changed declaratively here, but we find a difference in the output of
+  queries, e.g. __descend(X,Y)__ returns __X, Y = anne, bridget__ in __descend1.prolog__,
+  whereas it returns __X, Y = anne, emily__ in __descend2.prolog__.
+
+* Let's consider yet another change (descend3.prolog):-
+
+    child(anne,bridget).
+    child(bridget,caroline).
+    child(caroline,donna).
+    child(donna,emily).
+
+    descend(X,Y) :- descend(Z,Y),
+        child(X,Z).
+
+    descend(X,Y) :- child(X,Y).
+
+* Here we rearrange clauses within a rule. This has a very drastic impact - any attempt at a
+  query involving __descend__ will fail with a stack overflow exception, because Prolog will
+  attempt to match any __Z__ with a given __Y__, and go off into wonderland.
+
+* This is an example of __left recursion__, where the left-most item of the body is identical
+  (except for the choice of variables) to the head. These very often give rise to
+  non-terminating computations.
+
+* Let's look at a final example (descend4.prolog):-
+
+    child(anne,bridget).
+    child(bridget,caroline).
+    child(caroline,donna).
+    child(donna,emily).
+
+    descend(X,Y)  :-  child(X,Y).
+
+    descend(X,Y)  :-  descend(Z,Y),
+                      child(X,Z).
+
+* We've now placed the base case rule before the recursive rule. This means that true queries
+  will succeed, but false queries will fail, e.g. __descend(emily,anne).__
+
+* When it comes to non-terminating programs, changes in rule ordering might result in some
+  extra solutions, however goal reordering is more effective, as we've seen left recursion is a
+  far bigger problem than in what order results are returned.
+
+* The basic rule of thumb is - avoid left recursion, try to put recursive terms as far right as
+  possible in a rule body.
