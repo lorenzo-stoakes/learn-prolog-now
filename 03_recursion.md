@@ -189,5 +189,54 @@ There are two important things to note:-
 
 This is the case we will use for the base clause.
 
-2. Assume that we want to add the two numerals __X__ and __Y__ (e.g. __succ(succ(succ(0)))__ 
+2. Assume that we want to add the two numerals __X__ and __Y__ (e.g. __succ(succ(succ(0)))__
+and __X__ is not 0. Now, if we say that __X1__ is the numeral which has one less __succ__
+function than __X__ (e.g. __succ(succ(0))__ in our example), and if we know the result, __Z__,
+of adding __X1__ and __Y__, then it's easy to compute the result of adding __X__ and __Y__ -
+just add one __succ__ functor to __Z__. We can express this as:-
 
+    add(0,Y,Y).
+    add(succ(X),Y,succ(Z)) :-
+        add(x,Y,Z).
+
+* Let's look at a trace of an example - __add(succ(succ(succ(0))), succ(succ(0)), R).__ -
+
+    [trace]  ?- add(succ(succ(succ(0))), succ(succ(0)), R).
+       Call: (6) add(succ(succ(succ(0))), succ(succ(0)), _G378) ? creep
+
+First of all, we set __\_G378__ to __R__.
+
+       Call: (7) add(succ(succ(0)), succ(succ(0)), _G454) ? creep
+
+Since our first term is not 0 we can't use the base case fact, so we look at the recursive
+rule. We unify by stripping a __succ__ from __succ(succ(succ(0)))__, then set __\_G454__ to
+__succ(\_G378_)__.
+
+       Call: (8) add(succ(0), succ(succ(0)), _G456) ? creep
+
+We repeat the process, setting __\_G456__ to __succ(\_G454)__.
+
+       Call: (9) add(0, succ(succ(0)), _G458) ? creep
+
+We call again, and this time we hit the base case, with __\_G458__ set to __\_G456__.
+
+       Exit: (9) add(0, succ(succ(0)), succ(succ(0))) ? creep
+
+And we get the result - __\_G458 = succ(succ(0))__.
+
+       Exit: (8) add(succ(0), succ(succ(0)), succ(succ(succ(0)))) ? creep
+
+__\_G456 = succ(succ(succ(0)))__.
+
+       Exit: (7) add(succ(succ(0)), succ(succ(0)), succ(succ(succ(succ(0))))) ? creep
+
+__\_G454 = succ(succ(succ(succ(0))))__.
+
+       Exit: (6) add(succ(succ(succ(0))), succ(succ(0)), succ(succ(succ(succ(succ(0)))))) ? creep
+    R = succ(succ(succ(succ(succ(0))))).
+
+__R = \_G378 = succ(succ(succ(succ(succ(0)))))__.
+
+* The search tree:-
+
+<img src="http://www.learnprolognow.org/html/chap3-pspic2.ps.png" />
