@@ -3,7 +3,7 @@
 Learn Prolog Now!
 =================
 
-Notes for [chapter 2](http://www.learnprolognow.org/lpnpage.php?pagetype=html&pageid=lpn-htmlch3).
+Notes for [chapter 3](http://www.learnprolognow.org/lpnpage.php?pagetype=html&pageid=lpn-htmlch3).
 
 I use [swipl](http://www.swi-prolog.org/) as my prolog interpreter.
 
