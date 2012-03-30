@@ -125,3 +125,21 @@ the anonymous variable thus:-
     X = 4 ;
     false.
 
+### 4.3 Recursing Down Lists ###
+
+* The __member/2__ predicate works by recursively working its way down a list, doing something
+  to the head, then recursively doing the same thing to the tail. Recursing down a list in this
+  way is a very common technique in Prolog. It's worth practicing.
+
+* We often want to compare lists to one another.
+
+* Let's say we want to write __a2b2/2__ which determines whether 2 lists have the same length,
+  e.g., we want:-
+
+    ?- a2b([a,a,a,a],[b,b,b,b]).
+    true.
+
+    a2b([], []).
+    a2b([_|T1],[_|T2]):-
+        a2b(T1,T2).
+
