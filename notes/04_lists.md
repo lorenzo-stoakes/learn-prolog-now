@@ -95,3 +95,33 @@ the anonymous variable thus:-
 
     ?- [_,_,[_|X]|_] = [[], dead(z), [2, [b, c]], [], Z, [2, [b, c]]].
     X = [[b, c]].
+
+### 4.2 Member ###
+
+* One of the most basic things we might want to know is whether something is a member of a list
+  or not. This is typically called __member__. An implementation can be as follows:-
+
+    member(X,[X|T]).
+    member(X,[_|T]):- member(X, T).
+
+* Consider the following query:-
+
+    ?- member(zed,[yolanda,trudy,vincent,jules]).
+
+* Procedurally, after much recursion and gnashing of teeth, you end up with the following
+  query:-
+
+    ?- member(zed, []).
+
+* Since, as previously discussed, the empty list cannot be split into head and tail, Prolog
+  will simply return false at this point.
+
+* We can use __member__ to determine all the elements of a list, thus:-
+
+    ?- member(X,[1,2,3,4]).
+    X = 1 ;
+    X = 2 ;
+    X = 3 ;
+    X = 4 ;
+    false.
+
