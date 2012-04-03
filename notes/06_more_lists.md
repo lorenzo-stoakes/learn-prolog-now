@@ -232,7 +232,7 @@ Let's look at a trace of this running:-
 
 * We're better off using an accumulator, as previously implemented :-) :-
 
-    rev([], R, R):- [].
+    rev([], R, R).
 
     rev([H|T], A, R):-
         rev(T, [H|A], R).
@@ -248,8 +248,6 @@ Under trace:-
        Call: (8) rev([2, 3], [1], _G820) ? 
        Call: (9) rev([3], [2, 1], _G820) ? 
        Call: (10) rev([], [3, 2, 1], _G820) ? 
-       Call: (11) [] ? 
-       Exit: (11) [] ? 
        Exit: (10) rev([], [3, 2, 1], [3, 2, 1]) ? 
        Exit: (9) rev([3], [2, 1], [3, 2, 1]) ? 
        Exit: (8) rev([2, 3], [1], [3, 2, 1]) ? 
