@@ -7,6 +7,9 @@ Notes for [chapter 5](http://www.learnprolognow.org/lpnpage.php?pagetype=html&pa
 
 I use [swipl](http://www.swi-prolog.org/) as my prolog interpreter.
 
+Chapter 5 - Arithmetic
+----------------------
+
 ### 5.1 Arithmetic in Prolog ###
 
 * Prolog provides a number of tools for manipulating integers, and also real numbers (though we

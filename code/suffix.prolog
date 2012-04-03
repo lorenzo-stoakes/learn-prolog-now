@@ -1,0 +1,1 @@
+suffix_(S,L):- append_(_,S,L).
