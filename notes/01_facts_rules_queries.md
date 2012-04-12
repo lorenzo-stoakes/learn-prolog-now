@@ -25,6 +25,8 @@ Chapter 1 - Facts, Rules and Other Queries
 
 * Let's look at an example:-
 
+E.g.:-
+
     woman(mia).
     woman(jody).
     woman(yolanda).
@@ -41,12 +43,16 @@ Chapter 1 - Facts, Rules and Other Queries
 * How can we use KB1? By posing *queries*, i.e. asking questions about the information KB1
   contains. E.g., is Mia a woman?:-
 
+E.g.:-
+
     ?- woman(mia).
     true.
 
 * Note the full stop is important. Without it prolog won't start working on the query.
 
 * Similarly:-
+
+E.g.:-
 
     ?- playsAirGuitar(jody).
     true.
@@ -55,10 +61,14 @@ Chapter 1 - Facts, Rules and Other Queries
 
 * If we ask about a property we don't know about we receive the following (in swipl):-
 
+E.g.:-
+
     ?- tattooed(jody).
     ERROR: toplevel: Undefined procedure: tattooed/1 (DWIM could not correct goal)
 
 * We can query predicates too:-
+
+E.g.:-
 
     ?- party.
     true.
@@ -68,6 +78,8 @@ Chapter 1 - Facts, Rules and Other Queries
 ### Knowledge Base 2 ###
 
 * Let's look at another knowledge base:-
+
+E.g.:-
 
     happy(yolanda).
     listens2Music(mia).
@@ -90,6 +102,8 @@ Chapter 1 - Facts, Rules and Other Queries
 
 * If a knowledge base contains a rule:-
 
+E.g.:-
+
     head :- body
 
 And Prolog knows that the body follows from the information in the knowledge base, then Prolog
@@ -99,13 +113,17 @@ can infer head.
 
 * An example is:-
 
+E.g.:-
+
     ?- playsAirGuitar(mia).
     true.
 
 Here, though we've not explicitly recorded the fact that mia playsAirGuitar, Prolog has
 *inferred* that this is the case, as we have specified listens2Music(mia) as a fact.
 
-* Prolog can chain together uses of modus ponens. E.g.:-
+* Prolog can chain together uses of modus ponens.
+
+E.g.:-
 
     ?- playsAirGuitar(yolanda).
     true.
@@ -130,6 +148,8 @@ that playsAirGuitar(yolanda) follows from listens2Music(yolanda).
 
 * Let's look at the contents of Knowledge Base 3:-
 
+E.g.:-
+
     happy(vincent).
     listens2Music(butch).
     playsAirGuitar(vincent):-
@@ -145,6 +165,8 @@ that playsAirGuitar(yolanda) follows from listens2Music(yolanda).
 * We have the same three predicates as KB2, only we define them differently. Note
   particularly:-
 
+E.g.:-
+
     playsAirGuitar(vincent):-
         listens2Music(vincent),
         happy(vincent).
@@ -158,6 +180,8 @@ that playsAirGuitar(yolanda) follows from listens2Music(yolanda).
 
 * Thus:-
 
+E.g.:-
+
     ?- playsAirGuitar(vincent).
     false.
 
@@ -168,10 +192,14 @@ that playsAirGuitar(yolanda) follows from listens2Music(yolanda).
 
 Note that, due to modus ponens:-
 
+E.g.:-
+
     ?- playsAirGuitar(butch).
     true.
 
 * We can also express logical disjunction as follows:-
+
+E.g.:-
 
     playsAirGuitar(butch):-
         happy(butch);
@@ -180,6 +208,8 @@ Note that, due to modus ponens:-
 ### Knowledge Base 4 ###
 
 * KB4:-
+
+E.g.:-
 
     woman(mia).
     woman(jody).
@@ -195,6 +225,8 @@ Note that, due to modus ponens:-
 * We have relations between 2 names, however this is hardly anything altogether novel.
 
 * We do introduce a novel query:-
+
+E.g.:-
 
     ?- woman(X).
     X = mia .
@@ -219,6 +251,8 @@ Note that, due to modus ponens:-
   which we could potentially obtain here. We can obtain these using the logical disjunction
   operator ';':-
 
+E.g.:-
+
     ?- woman(X).
     X = mia ;
     X = jody ;
@@ -227,6 +261,8 @@ Note that, due to modus ponens:-
 Here we're hitting ; each time a result is returned by swipl.
 
 * Let's try something more complicated:-
+
+E.g.:-
 
     ?- loves(marsellus,X), woman(X).
     X = mia.
@@ -237,7 +273,9 @@ Here we're hitting ; each time a result is returned by swipl.
 ### Knowledge Base 5 ###
 
 * We've see the use of variables in queries, however we can also use them in knowledge
-  bases. E.g. KB5:-
+  bases.
+
+E.g. KB5:-
 
     loves(vincent, mia).
     loves(marsellus, mia).
@@ -252,6 +290,8 @@ Here we're hitting ; each time a result is returned by swipl.
   to anyone, and is not limited to specific people.
 
 * We can ask the following query:-
+
+E.g.:-
 
     ?- jealous(marsellus, W).
     W = vincent ;
@@ -272,6 +312,8 @@ Here we're hitting ; each time a result is returned by swipl.
 
 * An *atom* is either an identifier:-
 
+E.g.:-
+
     [a-z][a-zA-Z0-9_]*
 
 Or an arbitrary sequence of characters enclosed in single quotes (the sequence between the
@@ -284,6 +326,8 @@ meaning e.g. ';', ':-'.
 
 * A *variable* is:-
 
+E.g.:-
+
     [A-Z][a-zA-Z0-9_]*
 
 * The _ variable, the anonymous variable, is special. We discuss it later.
@@ -295,7 +339,9 @@ meaning e.g. ';', ':-'.
 
 * The functor must be an atom. Arguments can be any term.
 
-* We can just keep on nesting, e.g.:-
+* We can just keep on nesting.
+
+E.g.:-
 
     hide(X, father(father(father(butch))))
 
@@ -311,14 +357,20 @@ __father(father(father(butch)))__.
 * It's usual to refer to predicates with a suffix /N where N is the predicate's arity. E.g.,
   from KB2:-
 
+E.g.:-
+
     listens2Music/1
     happy/1
     playsAirGuitar/1
 
 * Can obtain a listing of code using the following command:-
 
+E.g.:-
+
     listing.
 
 * Can get all listing relating to a predicate by using a command like:-
+
+E.g.:-
 
     listing(listens2Music).

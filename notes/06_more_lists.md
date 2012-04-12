@@ -16,13 +16,16 @@ Chapter 6 - More Lists
 * We will define an important predicate, __append/3__, whose arguments are all lists.
 
 * Declaratively, __append__ will hold when __L3__ in __append(L1,L2,L3)__ is equal to __L1__
-  and __L2__ appended together, eg.:-
+  and __L2__ appended together.
+
+E.g.:-
 
     ?- append([a,b,c],[1,2,3],[a,b,c,1,2,3]).
     true.
 
-* Obviously, you're more likely to use the predicate procedurally to append two lists together,
-  e.g.:-
+* Obviously, you're more likely to use the predicate procedurally to append two lists together.
+
+E.g.:-
 
     ?- append([1,2],[3],R).
     R = [1, 2, 3].
@@ -56,7 +59,9 @@ E.g. a trace:-
 
 ### Using Append ###
 
-* We can use __append/3__ to split up a list into two consecutive lists, e.g.:-
+* We can use __append/3__ to split up a list into two consecutive lists.
+
+E.g.:-
 
     ?- append(X,Y,[a,b,c,d]).
     X = [],
@@ -71,7 +76,9 @@ E.g. a trace:-
     Y = [] ;
     false.
 
-* Or to find the prefixes of a list:-
+* Or to find the prefixes of a list.
+
+E.g.:-
 
     prefix(P,L):- append(P,_,L).
 
@@ -119,7 +126,9 @@ Let's look at a trace:-
        Fail: (6) prefix_(_G995, [1, 2, 3]) ? 
     false.
 
-* And the suffixes:-
+* And the suffixes.
+
+E.g.:-
 
     suffix(S,L):- append(_,S,L).
 

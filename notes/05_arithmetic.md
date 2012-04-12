@@ -17,6 +17,8 @@ Chapter 5 - Arithmetic
 
 * Comparison between standard arithmetic and prolog equivalents:-
 
+E.g.:-
+
     +--------------------+--------------------+
     |Arithmetic Examples |  Prolog Notation   |
     +--------------------+--------------------+
@@ -45,7 +47,9 @@ E.g.:-
 
 etc.
 
-* We can solve problems using variables, e.g.:-
+* We can solve problems using variables.
+
+E.g.:-
 
     ?- X is 6+2.
     X = 8.
@@ -53,16 +57,22 @@ etc.
     ?- R is mod(7,2).
     R = 1.
 
-* We can use arithmetic operations when we define predicates, e.g.:-
+* We can use arithmetic operations when we define predicates.
+
+E.g.:-
 
     add_3_and_double(X,Y) :- Y is (X+3)*2.
 
 * Which gives us:-
 
+E.g.:-
+
     ?- add_3_and_double(1,X).
     X = 8.
 
-* Standard precedence applies in Prolog, e.g.:-
+* Standard precedence applies in Prolog.
+
+E.g.:-
 
     ?- X is 3+2*4.
     X = 11.
@@ -76,13 +86,17 @@ etc.
 
 * The functors of these terms are +, - and * respectively, and the arguments are 3 and 2. Other
   than the fact that the functors go between their arguments, these are ordinary Prolog terms
-  and unless we do something special, Prolog will not actually perform any arithmetic. E.g.:-
+  and unless we do something special, Prolog will not actually perform any arithmetic.
+
+E.g.:-
 
     ?- X = 3+2.
     X = 3+2.
 
 * All that has happened here is that __X__ has been unified with 3+2. It has done what it
   typically does when __=/2__ is used - performed unification. Similarly:-
+
+E.g.:-
 
     ?- 3+2*5 = X.
     X = 3+2*5.
@@ -96,19 +110,25 @@ etc.
 
 * Moreover, though we are free to use variables on the righthand side of __is__, the variable
   must have already been instantiated to a variable-free arithmetic expression. If this isn't
-  the case, Prolog will provide an __instantiation\_error__. E.g.:-
+  the case, Prolog will provide an __instantiation\_error__.
+
+E.g.:-
 
     add_3_and_double(X,Y) :- Y is (X+3)*2.
 
     ?- add_3_and_double(X,12).
     ERROR: is/2: Arguments are not sufficiently instantiated
 
-* For Prolog, __3+2__ is just a term. In fact, it is actually just __+(3,2)__, so e.g.:-
+* For Prolog, __3+2__ is just a term. In fact, it is actually just __+(3,2)__, so.
+
+E.g.:-
 
     X is +(3,2).
 
 * Moreover, __is__ is just a term in the precise same way, so you can express the above query
-  as:-
+  as.
+
+E.g.:-
 
     is(X,+(3,2)).
     X = 5.
@@ -138,12 +158,16 @@ E.g.:-
 
 * This is relatively easy to understand. However, there is an alternative approach, using
   *accumulators*. Accumulator is the Prolog analog to variables used to hold intermediate
-  results found in other languages, e.g.:-
+  results found in other languages.
+
+E.g.:-
 
     accLen([_|T],A,L):- Anew is A+1, accLen(T, Anew, L).
     accLen([],A,A).
 
-* Let's run a trace on this:-
+* Let's run a trace on this.
+
+E.g.:-
 
     [trace]  ?- accLen([a,b,c],0,L).
        Call: (6) accLen([a, b, c], 0, _G357) ?
@@ -169,6 +193,8 @@ E.g.:-
 
 * We can bring this point home by having a look at a trace of __len__:-
 
+E.g.:-
+
     [trace]  ?- len([a,b,c],L).
        Call: (6) len([a, b, c], _G356) ?
        Call: (7) len([b, c], _G438) ?
@@ -193,6 +219,8 @@ E.g.:-
 * Some Prolog arithmetic predicates do actually carry out arithmetic without the use of __is__,
   i.e. the operators which compare integers:-
 
+E.g.:-
+
     +--------------------+--------------------+
     |Arithmetic Examples |  Prolog Notation   |
     +--------------------+--------------------+
@@ -209,13 +237,17 @@ E.g.:-
     |       x > y        |       X > Y.       |
     +--------------------+--------------------+
 
-* They force both the righthand and lefthand arguments to be evaluated, e.g.:-
+* They force both the righthand and lefthand arguments to be evaluated.
+
+E.g.:-
 
     ?- 2 < 4+1.
     true.
 
 * Note that =:= differs from = in that = only tries to unify the left and right-hand sides of
-  the operation, whereas =:= forces evaluation. The same goes for \=, e.g.:-
+  the operation, whereas =:= forces evaluation. The same goes for \=.
+
+E.g.:-
 
     ?- 3+1 \= 2+2.
     true.
@@ -224,7 +256,9 @@ E.g.:-
     false.
 
 * Whenever we use these operators, we have to be careful to make sure any variables are
-  instantiated. For example:-
+  instantiated.
+
+E.g.:-
 
     ?- X < 3.
     ERROR: </2: Arguments are not sufficiently instantiated
@@ -234,24 +268,32 @@ E.g.:-
   work our way down the list the accumulator will keep track of the highest integer yet
   encountered.
 
+E.g.:-
+
     accMax([], A, A).
     accMax([H|T], A, M):- H > A,  accMax(T, H, M).
     accMax([_|T], A, M):- H =< A, accMax(T, A, M).
 
 * We have to be careful with this, however, as initialising the accumulator, __A__, to 0 does
   not work when the list contains negative numbers. A way around having to make a choice as to
-  the accumulator is to simply use the head of the list, e.g.:-
+  the accumulator is to simply use the head of the list.
+
+E.g.:-
 
     max([H|T], M):-
         accMax([H|T],H,M).
 
 * Another way of expressing this program is:-
 
+E.g.:-
+
     max(List, M):-
         List = [H|_],
         accMax(List,H,Max).
 
-* And we also cover negative integers, e.g.:-
+* And we also cover negative integers.
+
+E.g.:-
 
     ?- max([-1,-3,-5],M).
     M = -1.

@@ -16,6 +16,8 @@ Chapter 4 - Lists
 
 * Some examples:-
 
+E.g.:-
+
     [mia, vincent, jules, yolanda]
 
 We specify a list by enclosing the elements in square braces. The length of a list is the
@@ -40,7 +42,9 @@ A combination of all these ideas.
 * Any non-empty list can be thought of as consisting of two parts - the head and tail. The head
   is the first item in the list, the tail is everything else. More precisely - the tail is the
   list that remains when we take the first element away. The tail of a list is always a
-  list. E.g.:-
+  list.
+
+E.g.:-
 
     [mia, vincent, jules, yolanda]
 
@@ -49,18 +53,24 @@ The head of this list is mia, the tail is [vincent, jules, yolanda].
 * What about a list of length 1? The head is the element, the tail is the empty list.
 
 * Prolog has a built in operator, |, which can be used to decompose a list into its head and
-  tail. E.g.:-
+  tail.
+
+E.g.:-
 
     ?- [Head|Tail] = [mia, vincent, jules, yolanda].
     Head = mia,
     Tail = [vincent, jules, yolanda].
 
-* Only non-empty lists have heads and tails, e.g.:-
+* Only non-empty lists have heads and tails.
+
+E.g.:-
 
     ?- [X|Y] = [].
     false.
 
 * We can obtain more than one element thus:-
+
+E.g.:-
 
     ?- [X, Y|W] = [[], dead(z), [2, [b, c]], [], Z].
     X = [],
@@ -93,6 +103,8 @@ the anonymous variable thus:-
 
 * We can also use the | notation in a nested fashion:-
 
+E.g.:-
+
     ?- [_,_,[_|X]|_] = [[], dead(z), [2, [b, c]], [], Z, [2, [b, c]]].
     X = [[b, c]].
 
@@ -101,15 +113,21 @@ the anonymous variable thus:-
 * One of the most basic things we might want to know is whether something is a member of a list
   or not. This is typically called __member__. An implementation can be as follows:-
 
+E.g.:-
+
     member(X,[X|T]).
     member(X,[_|T]):- member(X, T).
 
 * Consider the following query:-
 
+E.g.:-
+
     ?- member(zed,[yolanda,trudy,vincent,jules]).
 
 * Procedurally, after much recursion and gnashing of teeth, you end up with the following
   query:-
+
+E.g.:-x
 
     ?- member(zed, []).
 
@@ -117,6 +135,8 @@ the anonymous variable thus:-
   will simply return false at this point.
 
 * We can use __member__ to determine all the elements of a list, thus:-
+
+E.g.:-
 
     ?- member(X,[1,2,3,4]).
     X = 1 ;
@@ -135,6 +155,8 @@ the anonymous variable thus:-
 
 * Let's say we want to write __a2b2/2__ which determines whether 2 lists have the same length,
   e.g., we want:-
+
+E.g.:-
 
     ?- a2b([a,a,a,a],[b,b,b,b]).
     true.

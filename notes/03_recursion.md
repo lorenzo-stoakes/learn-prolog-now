@@ -60,6 +60,8 @@ Consider:-
 
 * We want to avoid infinite recursion, so rules like:-
 
+E.g.:-
+
     p :- p.
 
 Are not a good idea.
@@ -67,6 +69,8 @@ Are not a good idea.
 ### Example 2: Descendant ###
 
 * Consider the following:-
+
+E.g.:-x
 
     child(anne,bridget).
     child(bridget,caroline).
@@ -77,6 +81,8 @@ E.g.:- Anne is the mother of Bridget who is the mother of Caroline who is the mo
 who is the mother of Emily.
 
 * We can define this in prolog thus:-
+
+E.g.:-
 
     descend(X,Y) :- child(X,Y).
     descend(X,Y) :- child(X,Z),
@@ -91,6 +97,8 @@ who is the mother of Emily.
 
 * Let's look at the procedural meaning of this recursive predicate, by looking at an example:-
 
+E.g.:-
+
     ?- descend(anne,donna)
 
 * Prolog looks at the first rule, and cannot unify __anne__ with __X__ while at the same time
@@ -99,6 +107,8 @@ who is the mother of Emily.
 * Next, Prolog looks at the second rule and repeatedly tries to fit the base rule followed by
   looking at the recursive rule until it is able to unify __X__ and __Y__ with __anne__ and
   __donna__ in the second __descend(X,Y)__ rule. The trace is as follows:-
+
+E.g.:-
 
     [trace]  ?- descend(anne,donna).
        Call: (6) descend(anne, donna) ? creep
@@ -143,10 +153,14 @@ We use the following inductive definition:-
 
 * We can easily define this in Prolog:-
 
+E.g.:-
+
     numeral(0).
     numeral(succ(X)) :- numeral(X).
 
-* We can do interesting things with this, e.g.:-
+* We can do interesting things with this.
+
+E.g.:-
 
     ?- numeral(X).
     X = 0 ;
@@ -169,6 +183,8 @@ We use the following inductive definition:-
 
 * We want to get:-
 
+E.g.:-
+
     ?- add(succ(succ(0)),succ(succ(0)),
         succ(succ(succ(succ(0))))).
     true.
@@ -179,7 +195,9 @@ We use the following inductive definition:-
 There are two important things to note:-
 
 1. Whenever the first argument is 0, the third argument has to be the same as the second
-   argument, e.g.:-
+   argument.
+
+E.g.:-
 
     ?- add(0,succ(succ(0)),Y).
     Y = succ(succ(0)).
@@ -195,11 +213,15 @@ function than __X__ (e.g. __succ(succ(0))__ in our example), and if we know the 
 of adding __X1__ and __Y__, then it's easy to compute the result of adding __X__ and __Y__ -
 just add one __succ__ functor to __Z__. We can express this as:-
 
+E.g.:-
+
     add(0,Y,Y).
     add(succ(X),Y,succ(Z)) :-
         add(x,Y,Z).
 
 * Let's look at a trace of an example - __add(succ(succ(succ(0))), succ(succ(0)), R).__ -
+
+E.g.:-
 
     [trace]  ?- add(succ(succ(succ(0))), succ(succ(0)), R).
        Call: (6) add(succ(succ(succ(0))), succ(succ(0)), _G378) ? creep
@@ -290,6 +312,8 @@ Now let's make a single change by reordering the __descend__ rules (descend2.pro
 
 * Let's consider yet another change (descend3.prolog):-
 
+E.g.:-
+
     child(anne,bridget).
     child(bridget,caroline).
     child(caroline,donna).
@@ -309,6 +333,8 @@ Now let's make a single change by reordering the __descend__ rules (descend2.pro
   non-terminating computations.
 
 * Let's look at a final example (descend4.prolog):-
+
+E.g.:-
 
     child(anne,bridget).
     child(bridget,caroline).
