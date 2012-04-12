@@ -175,7 +175,8 @@ I.e., __SubL__ is a sublist of __L__ if there is some suffix __S__ of __L__ of w
 is a prefix. The program isn't explicitly using __append/3__, but under the covers, that's what
 it's using.
 
-### 6.2 Reversing a List ###
+6.2 Reversing a List
+--------------------
 
 * __append/3__ is useful, and it's important to know how to use it. But it's important to
   realise that it can also be a source of inefficiency, and that you probably don't want to use
