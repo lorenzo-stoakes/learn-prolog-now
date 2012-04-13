@@ -600,8 +600,6 @@ Rather than:-
 
     is_dead(zed)
 
-
-
 You define operators in Prolog via the following syntax:-
 
     :- op(Precedence, Type, Name).
@@ -623,16 +621,15 @@ These are the possible values for Type:-
 
 E.g.:-
 
-    :-  op(  1200,  xfx,  [  :-,  -->  ]).
-    :-  op(  1200,   fx,  [  :-,  ?-  ]).
-    :-  op(  1100,  xfy,  [  ;  ]).
-    :-  op(  1000,  xfy,  [  ’,’  ]).
-    :-  op(   700,  xfx,  [  =,  is,  =..,  ==,  \==,  
-                             =:=,  =\=,  <,  >,  =<,  >=  ]).
-    :-  op(   500,  yfx,  [  +,  -  ]).
-    :-  op(   500,   fx,  [  +,  -  ]).
-    :-  op(   300,  xfx,  [  mod  ]).
-    :-  op(   200,  xfy,  [  ^  ]).
+    :-  op(  1200,  xfx,  [   :-, -->                                       ]).
+    :-  op(  1200,   fx,  [   :-, ?-                                        ]).
+    :-  op(  1100,  xfy,  [    ;                                            ]).
+    :-  op(  1000,  xfy,  [ ' ,'                                            ]).
+    :-  op(   700,  xfx,  [    =,  is, =.., ==, \==, =:=, =\=, <, >, =<, >= ]).
+    :-  op(   500,  yfx,  [    +,   -                                       ]).
+    :-  op(   500,   fx,  [    +,   -                                       ]).
+    :-  op(   300,  xfx,  [  mod                                            ]).
+    :-  op(   200,  xfy,  [    ^                                            ]).
 
 * Note that this only defines the *syntax* of the declared operator, not the *semantics*,
   i.e. - you still need to determine what the operator does once you've declared its fancy
