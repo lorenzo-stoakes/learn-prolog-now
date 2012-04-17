@@ -23,7 +23,9 @@ Chapter 10 - Cuts and Negation
 * There is another way - the built-in predicate __!__, called *cut*, which provides a more
   direct way of controlling the way Prolog looks for solutions.
 
-* Cut is essentially a special atom we can use to write clauses, e.g.:-
+* Cut is essentially a special atom we can use to write clauses.
+
+E.g.:-
 
     p(X):- b(X), c(X), !, d(X), e(X).
 
@@ -136,7 +138,9 @@ With this corresponding search tree:-
 
 <img src="http://www.learnprolognow.org/html/chap10-pspic5.ps.png" />
 
-* Now let's add a cut:-
+* Now let's add a cut.
+
+E.g.:-
 
     q(X,Y):- i(X), !, j(Y).
 
@@ -393,6 +397,8 @@ We can capture this as:-
 * However, suppose this is a very complicated goal which takes a lot of time to compute - we
   might end up having to compute __a__ twice. We can use a red cut to lock into choosing __a__
   and write this as:-
+
+E.g.:-
 
     p:- a,!,b.
     p:- c.
