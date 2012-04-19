@@ -25,11 +25,13 @@ Chapter 1 - Facts, Rules and Other Queries
 
 * Let's look at an example:-
 
+```prolog
         woman(mia).
         woman(jody).
         woman(yolanda).
         playsAirGuitar(jody).
         party.
+```
 
 * We'll call this collection of facts KB1. It's our first example of a prolog program.
 
