@@ -25,7 +25,7 @@ Chapter 1 - Facts, Rules and Other Queries
 
 * Let's look at an example:-
 
-E.g.:-
+&nbsp;
 
     woman(mia).
     woman(jody).
