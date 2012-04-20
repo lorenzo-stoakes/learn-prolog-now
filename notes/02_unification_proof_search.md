@@ -18,19 +18,18 @@ Chapter 2 - Unification and Proof Search
 
 * There are three types of term:-
 
-E.g.:-
-
+```
     constants - atoms/numbers
     variables
     complex terms
+```
 
 * Let's work our way towards a definition of when Prolog will unify two terms. A basic
   definition is as follows:-
 
-E.g.:-
-
 >Two terms unify if they are the same term or if they contain variables that can be uniformly
 >instantiated with terms in such a way that the resulting terms are equal.
+
 
 * So the terms __mia__ and __mia__ unify, because they are the same atom.
 
@@ -107,48 +106,48 @@ To test understanding, let's work through several examples.
 
 * The __=/2__ predicate determines whether two arguments unify.
 
-E.g.:-
-
+```prolog
     ?- =(mia,mia).
     true.
     ?- =(mia,vincent).
     false.
+```
 
 * We can also do this inline.
 
-E.g.:-
-
+```prolog
     ?- mia = mia.
     true.
+```
 
 * This is true from point 1. Two constants unify if they are exactly the same.
 
 * Let's try an example with a variable:-
 
-E.g.:-
-
+```prolog
     ?- mia = X.
     X = mia.
+```
 
 * Clearly __X__ can be unified with __mia__, however how does this follow from our definition?
   It comes from point 2.
 
 * Consider the following query:-
 
-E.g.:-
-
+```prolog
     ?- X = Y.
     X = Y.
+```
 
 * Again this is point 2 at play. These can clearly unify with any term, most certainly another
   variable. Prolog simply notes that __X__ and __Y__ denote the same object.
 
 * Let's consider:-
 
-E.g.:-
-
+```prolog
     ?- X = mia, X = vincent.
     false.
+```
 
 * Taken separately, Prolog would succeed at both of them, instantiating __X__ to __mia__ in the
   first instance, and __X__ to __vincent__ in the second, however we are using the logical
@@ -160,18 +159,18 @@ E.g.:-
 
 * Let's look at an example involving complex terms:-
 
-E.g.:-
-
+```prolog
     ?- k(s(g),Y) = k(X,t(k)).
     Y = t(k),
     X = s(fg).
+```
 
 * Let's look at another:-
 
-E.g.:-
-
+```prolog
     ?- loves(X,X) = loves(marcellus,mia).
     false.
+```
 
 * Here we violate a part of the 3rd point, namely that the variable instantiations have to be
   compatible. __X=marcellus__, and __X=mia__ are not compatible as X cannot be both at once. If
@@ -187,9 +186,9 @@ E.g.:-
 
 * Consider the following:-
 
-E.g.:-
-
+```prolog
     ?- father(X) = X.
+```
 
 * Do these terms unify or not? A standard unification algorithm would say not. Why? Because of
   point 2, if we set __X = father(X)__, We'd then realise that the other side of the
@@ -200,10 +199,10 @@ E.g.:-
 * Strangely enough, __swipl__ doesn't appear to actually result in either a crash or an
   indication that there is an infinite regress here, instead giving:-
 
-E.g.:-
-
+```prolog
     ?- father(X)=X.
     X = father(X).
+```
 
 * A standard algorithm, given two terms to unify, will first carry out what is known as the
   'occurs check'. This means that when it is asked to unify a variable with a term, it first
@@ -215,10 +214,10 @@ E.g.:-
 * Prolog does have a predicate which allows us to perform unification *with* an occurs check,
   unify\_with\_occurs\_check/2.
 
-E.g.:-
-
+```prolog
     unify_with_occurs_check(father(X), X).
     false.
+```
 
 ### Programming with Unification ###
 
@@ -226,37 +225,37 @@ E.g.:-
   search (as we shall see), which alone makes it very useful. However, it can be useful just to
   have complex terms, through which programs can be defined by these terms alone.
 
-E.g.:-
-
+```prolog
     vertical(line(point(X,Y),point(X,Z))).
     horizontal(line(point(X,Y),point(Z,Y))).
+```
 
 * Here we encode the fact that two points with the same __X__ coordinate are vertical, and two
   points with the same __Y__ coordinate are horizontal.
 
 * We can perform some queries on this:-
 
-E.g.:-
-
+```prolog
     ?- vertical(line(point(1,1),point(1,3))).
     true.
 
     ?- vertical(line(point(1,1),point(3,2))).
     false.
+```
 
 * Note that what's really powerful is that we can ask more general questions.
 
-E.g.:-
-
+```prolog
     ?- horizontal(line(point(1,1),point(2,Y))).
     Y = 1.
+```
 
 * And also:-
 
-E.g.:-
-
+```prolog
     ?- horizontal(line(point(2,3),P)).
     P = point(_G307, 3).
+```
 
 (Note that __\_G307__ is a general variable which means any X is permissible.)
 
@@ -276,8 +275,7 @@ E.g.:-
 
 * Consider the following knowledge base:-
 
-E.g.:-
-
+```prolog
     f(a).
     f(b).
 
@@ -287,12 +285,13 @@ E.g.:-
     h(b).
 
     k(X) :- f(X), g(X), h(X).
+```
 
 * Suppose we posed the following query:-
 
-E.g.:-
-
+```prolog
     ?- k(Y).
+```
 
 * It is clear that the answer to the query ought to be __Y = b__, but how does Prolog work this
   out?
@@ -304,21 +303,21 @@ E.g.:-
   generating a brand new variable (e.g. __\_G34__) to represent the shared variables. So the
   original query now reads:-
 
-E.g.:-
-
+```prolog
     k(_G34)
+```
 
 * And Prolog knows that:-
 
-E.g.:-
-
+```prolog
     k(_G34) :- f(_G34), g(_G34), h(_G34).
+```
 
 * Prolog replaces the original query with the following list of goals:-
 
-E.g.:-
-
+```prolog
     f(_G34), g(_G34), h(_G34).
+```
 
 * We can represent this graphically:-
 
@@ -335,9 +334,9 @@ Everything in a box is either a query or a goal.
 * The first item Prolog finds which unifies with this goal is __f(a)__. This satisfies
   __f(\_G34)__ and we are left with two remaining goals. Our goals now look like:-
 
-E.g.:-
-
+```prolog
     g(a), h(a)
+```
 
 * And our graphical representation now looks like:-
 
@@ -345,9 +344,9 @@ E.g.:-
 
 * The knowledge base contains an entry __g(a)__, so our goal list now becomes:-
 
-E.g.:-
-
+```prolog
     h(a).
+```
 
 * And our graphical representation now looks like:-
 
@@ -374,22 +373,24 @@ E.g.:-
 * So, Prolog backtracks to the previous choice point, this is the point where the list of goals
   was:-
 
-E.g.:-
-
+```prolog
     f(_G34),g(_G34),h(_G34).
+```
 
 * Prolog must now redo this work. First it must try to re-satisfy the first goal by searching
   further in the knowledge base. It turns out that it can do it by unifying __f(\_G34)__ with
   __f(b)__. This satisfies __f(\_G34)__ and instantiates __X__ to __b__, so the remaining goal
   list is:-
 
-E.g.:-
-
+```prolog
     g(b),h(b).
+```
 
 * __g(b)__ is in the knowledge base, so this is satisfied too, leaving the goal list:-
 
+```prolog
     h(b).
+```
 
 * __h(b)__ is also in the knowledge base, so this is also satisfied.
 
@@ -422,18 +423,18 @@ E.g.:-
 
 * Let's look at another example, using the following familiar knowledge base:-
 
-E.g.:-
-
+```prolog
     loves(vincent,mia).
     loves(marcellus,mia).
 
     jealous(A,B):- loves(A,C), loves(B,C).
+```
 
 * If we now pose the following query:-
 
-E.g.:-
-
+```prolog
     ?- jealous(X,Y).
+```
 
 * Our search tree looks like:-
 
@@ -442,15 +443,15 @@ E.g.:-
 * There's only one possible way of unifying __jealous(X,Y)__ against the knowledge base, namely
   by using the rule:-
 
-E.g.:-
-
+```prolog
     jealous(A,B):- loves(A,C), loves(B,C).
+```
 
 * Meaning the new goals that have to be satisfied are:-
 
-E.g.:-
-
+```prolog
     loves(_G5,_G6),loves(_G7,_G6).
+```
 
 * There are two ways of unifying __loves(\_G5,\_G6)__ against the knowledge base:-
 
@@ -458,8 +459,11 @@ All-in-all there are four leaf nodes with an empty goal list, which means there 
   solutions to the problem:-
 
 1. X = _G5 = vincent, Y = _G7 = vincent.
+
 2. X = _G5 = vincent, Y = _G7 = marcellus.
+
 3. X = _G5 = marcellus, Y = _G7 = vincent.
+
 4. X = _G5 = marcellus, Y = _G7 = marcellus.
 
 2.4 Practical Session
@@ -467,6 +471,7 @@ All-in-all there are four leaf nodes with an empty goal list, which means there 
 
 Consider the following knowledge base:-
 
+```prolog
     f(a).
     f(b).
 
@@ -476,13 +481,17 @@ Consider the following knowledge base:-
     h(b).
 
     k(X):- f(X), g(X), h(X).
+```
 
 We can trace through using:-
 
+```prolog
     ?- trace.
+```
 
 Which gives us:-
 
+```prolog
     ?- trace.
     true.
 
@@ -502,11 +511,13 @@ Which gives us:-
        Exit: (7) h(b) ? creep
        Exit: (6) k(b) ? creep
     X = b.
+```
 
 (Pressing enter to step through at each step).
 
 We can turn it off thus:-
 
+```prolog
     [trace]  ?- notrace.
     true.
-
+```

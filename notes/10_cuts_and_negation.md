@@ -27,7 +27,9 @@ Chapter 10 - Cuts and Negation
 
 E.g.:-
 
+```prolog
     p(X):- b(X), c(X), !, d(X), e(X).
+```
 
 * Cut always succeeds, and has a side effect - if some goal makes use of this clause (the
   *parent goal*), then the cut commits Prolog to any choices that were made since the parent
@@ -38,6 +40,7 @@ E.g.:-
 
 Firstly, without a cut:-
 
+```prolog
     p(X):- a(X).
     p(X):- b(X), c(X), d(X), e(X).
     p(X):- f(X).
@@ -54,6 +57,7 @@ Firstly, without a cut:-
     X = 1 ;
     X = 2 ;
     X = 3.
+```
 
 The search tree for this knowledge base:-
 
@@ -61,11 +65,13 @@ The search tree for this knowledge base:-
 
 Now let's insert a cut into the second clause:-
 
+```prolog
     p(X):- b(X), c(X), !, d(X), e(X).
 
     ?- p(X).
     X = 1 ;
     false.
+```
 
 What's happening?
 
@@ -97,7 +103,9 @@ available. The crosses indicate branches which have been trimmed away.
 
 E.g., for:-
 
+```prolog
     q:- p1, ..., pn, !, r1, ..., rm
+```
 
 When we encounter the cut we are committed to using this particular clause for __q__ and the
 choices made when evaluating __p1__, ..., __pn__. However, we can backtrack as much as we like
@@ -107,6 +115,7 @@ over __r1__, ..., __rm__, and we can also backtrack among choices made before re
 
 The knowledge base:-
 
+```prolog
     s(X, Y):- q(X, Y).
     s(0, 0).
 
@@ -118,9 +127,11 @@ The knowledge base:-
     j(1).
     j(2).
     j(3).
+```
 
 Querying this KB:-
 
+```prolog
     s(X, Y).
     X = Y, Y = 1 ;
     X = 1,
@@ -133,19 +144,21 @@ Querying this KB:-
     X = 2,
     Y = 3 ;
     X = Y, Y = 0.
+```
 
 With this corresponding search tree:-
 
 <img src="http://www.learnprolognow.org/html/chap10-pspic5.ps.png" />
 
-* Now let's add a cut.
+* Now let's add a cut:-
 
-E.g.:-
-
+```prolog
     q(X,Y):- i(X), !, j(Y).
+```
 
 This results in:-
 
+```prolog
     ?- s(X, Y).
     X = Y, Y = 1 ;
     X = 1,
@@ -153,6 +166,7 @@ This results in:-
     X = 1,
     Y = 3 ;
     X = Y, Y = 0.
+```
 
 This is because:-
 
@@ -189,60 +203,72 @@ And the equivalent search tree is:-
 
 E.g., we should expect the following queries to succeed:-
 
+```prolog
     ?- max(2,3,3).
     ?- max(3,2,3).
     ?- max(3,3,3).
+```
 
 And the following queries should fail:-
 
+```prolog
     ?- max(2,3,2).
     ?- max(2,3,5).
+```
 
 Typically we'd use it thus:-
 
+```prolog
     ?- max(2,3,Max).
     Max = 3.
+```
 
 We could write this thus:-
 
+```prolog
     max(X,Y,X):- X >= Y.
     max(X,Y,Y):- Y > X.
+```
 
 * This is a perfectly fine program, only we find that Prolog will attempt to backtrack
-  unnecessarily in the case of __Y>X__.
+  unnecessarily in the case of __Y>X__. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- max(3,2,X).
     X = 3 ;
     false.
+```
 
 * The two clauses in this program are mutually exclusive. If the first succeeds, the second
   must fail and vice-versa. Attempting to re-satisfy this clause is a waste of time.
 
-* We can fix this with cut.
+* We can fix this with cut. E.g.:-
 
-E.g.:-
-
+```prolog
     max(X,Y,X):- X >= Y, !.
     max(X,Y,Y):- Y > X.
+```
 
 And we get:-
 
+```prolog
     ?- max(3,2,X).
     X = 3.
+```
 
-* We might think we can be clever and skip out the second clauses altogether.
+* We might think we can be clever and skip out the second clauses altogether. E.g.:-
 
-E.g.:-
-
+```prolog
     max(X,Y,X):- X >= Y, !.
     max(X,Y,Y).
+```
 
 However this isn't as clever as it seems. Consider:-
 
+```prolog
     ?- max(3,2,2).
     true.
+```
 
 This is obviously invalid. What's happened here is that the query has failed to unify at all
 with the first clause, but has trivially unified with the second one.
@@ -254,15 +280,17 @@ with the first clause, but has trivially unified with the second one.
   traversed the cut. We can work around this by introducing a third variable, so our first
   clause actually gets evaluated.
 
-E.g.:-
-
+```prolog
     max(X,Y,Z):- X >= Y, !, Z = X.
     max(X,Y,Y).
+```
 
 This works, e.g.:-
 
+```prolog
     ?- max(3,2,2).
     false.
+```
 
 * One important thing to note here is that this is a *red* cut, whereas our initial __max__
   program was a *green* cut. A red cut is, by definition, one whose absence changes the meaning
@@ -278,11 +306,11 @@ This works, e.g.:-
 ------------------------
 
 * One of Prolog's most useful features is the simple means by which it lets us state
-  generalisations. If we want to say that Vincent enjoys burgers then we write.
+  generalisations. If we want to say that Vincent enjoys burgers then we write. E.g.:-
 
-E.g.:-
-
+```prolog
     enjoys(vincent,X):- burger(X).
+```
 
 * However, in real life we have exceptions. How do we represent this in Prolog? E.g., consider
   the case where Vincent enjoys burgers, but not Big Kahuna burgers. How do we state this in
@@ -298,6 +326,7 @@ E.g.:-
 
 Consider the following KB:-
 
+```prolog
     enjoys(vincent,X):- big_kahuna_burger(X),!,fail.
     enjoys(vincent,X):- burger(X).
 
@@ -309,12 +338,12 @@ Consider the following KB:-
     big_kahuna_burger(b).
     big_mac(c).
     whopper(d).
+```
 
 * From this, we can see that our condition, i.e. that vincent does not like Big Kahuna burgers,
-  is applied.
+  is applied. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- enjoys(vincent,a).
     true.
 
@@ -326,6 +355,7 @@ E.g.:-
 
     ?- enjoys(vincent,d).
     true.
+```
 
 * The reason this works is the combination of __!__ and __fail/0__ - the *cut-fail
   combination*. When we run the query __enjoys(vincent,b)__, the first rule applies, and we
@@ -340,65 +370,70 @@ E.g.:-
 * It'd be better if we could extract this to make the program less reliant on the procedural
   qualities of the program.
 
-* We can abstract this idea away.
+* We can abstract this idea away. E.g.:-
 
-E.g.:-
-
+```prolog
     neg(Goal):- Goal,!,fail.
     neg(Goal).
+```
 
 This will succeed if __Goal__ does not succeed. So we can replace the first rule with:-
 
+```prolog
     enjoys(vincent,X):- burger(X), neg(big_kahuna_burger(X)).
+```
 
 * Negation as failure is an important tool - it's expressive (we can describe exceptions),
   while being relatively 'safe'. Using this, rather than using the lower-level cut form helps
   us avoid the programming errors that often go along with red cuts.
 
-* In fact, it's so useful that it often comes built in as the __\\+__ operator.
+* In fact, it's so useful that it often comes built in as the __\\+__ operator. E.g.:-
 
-E.g.:-
-
+```prolog
     enjoys(vincent,X):- burger(X), \+ big_kahuna_burger(X).
+```
 
-* We have to be careful with the order of things again, e.g. if we rewrote our rule.
+* We have to be careful with the order of things again, e.g. if we rewrote our rule. E.g.:-
 
-E.g.:-
-
+```prolog
     enjoys(vincent,X):- \+ big_kahuna_burger(X), burger(X).
+```
 
 And if we then pose the query, we get:-
 
+```prolog
     ?- enjoys(vincent,X).
     false.
+```
 
-* This fails because __big\_kahuna\_burger(X)__ holds as Prolog unifies __X__ to b.
+* This fails because __big\_kahuna\_burger(X)__ holds as Prolog unifies __X__ to b. If we
+  trace:-
 
-Trace:-
-
+```prolog
     [trace]  ?- enjoys(vincent,X).
        Call: (6) enjoys(vincent, _G560) ? 
        Call: (7) big_kahuna_burger(_G560) ? 
        Exit: (7) big_kahuna_burger(b) ? 
        Fail: (6) enjoys(vincent, _G560) ? 
     false.
+```
 
 * It's generally better to use the *negation as failure* operator than red cuts, but this isn't
   always the case. As always, perf hacks are the exception to the rule.
 
 * Consider the case where we want to capture the condition: 'p holds if a and b hold or a does
-  not hold and c holds too.'
+  not hold and c holds too.' We can capture this as:-
 
-We can capture this as:-
-
+```prolog
     p:- a, b.
     p:- \+ a, c.
+```
 
 * However, suppose this is a very complicated goal which takes a lot of time to compute - we
   might end up having to compute __a__ twice. We can use a red cut to lock into choosing __a__
   and write this as:-
 
-E.g.:-
-
+```prolog
     p:- a,!,b.
     p:- c.
+```

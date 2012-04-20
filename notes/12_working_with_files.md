@@ -16,37 +16,36 @@ Chapter 12 - Working With Files
 
 ### Reading in Programs ###
 
-* We already know of a way of inputting files to Prolog.
+* We already know of a way of inputting files to Prolog. Namely:-
 
-Namely:-
-
+```prolog
     [FileName].
+```
 
-* However, it's worth noting that we can read multiple files this way.
+* However, it's worth noting that we can read multiple files this way. E.g.:-
 
-E.g.:-
-
+```prolog
     [FileName1,FileName2,...,FileNameN].
+```
 
-* We don't have to do this interactively, we can put this at the top of a program file.
+* We don't have to do this interactively, we can put this at the top of a program file. E.g.:-
 
-E.g.:-
-
+```prolog
     :- [FileName1,FileName2,...,FileNameN].
+```
 
 * Prolog doesn't check whether a file needs to be read, i.e. if another file has referenced
-  something you're attempting to load.
+  something you're attempting to load. We can work around this thus:-
 
-We can work around this thus:-
-
+```prolog
     ensure_loaded(['listPredicates.prolog']).
+```
 
 ### Modules ###
 
-* Consider writing a program which manages a movie database.
+* Consider writing a program which manages a movie database. E.g.:-
 
-E.g.:-
-
+```prolog
     % printActors.prolog
 
     printActors(Film):-
@@ -68,6 +67,7 @@ E.g.:-
     displayList([X|L]):-
         write(X), nl,
         displayList(L).
+```
 
 * Note that __displayList__ has different definitions in each of these files, the actors are
   printed in a row (using __tab/1__), whereas the films are printed in a column (using
@@ -75,13 +75,16 @@ E.g.:-
 
 Defining our main Prolog file:-
 
+```prolog
     :- ['printActors.prolog'].
     :- ['printMovies.prolog'].
 
     % For now we're leaving out any actual code.
+```
 
 What happens when we try to load this?
 
+```prolog
     ?- ['main.prolog'].
     %  printActors.prolog compiled 0.00 sec, 5 clauses
     Warning: /Users/lstoakes/Dropbox/study/learnPrologNow/code/movie/printMovies.prolog:5:
@@ -89,18 +92,21 @@ What happens when we try to load this?
     %  printMovies.prolog compiled 0.00 sec, 5 clauses
     % main.prolog compiled 0.00 sec, 14 clauses
     true.
+```
 
 * We *could* rename the predicates, however this seems an unnecessary waste of energy.
 
 * We can work around this by using *modules*. By declaring these files as modules, we can
-  define which predicates are public and which predicates are private.
+  define which predicates are public and which predicates are private. Modules are declared
+  thusly:-
 
-Modules are declared thusly:-
-
+```prolog
     module(ModuleName, List_of_Predicates_to_be_Exported).
+```
 
 So, adapting our code:-
 
+```prolog
     % printActors.prolog
 
     :- module(printActors,[printActors/1]).
@@ -126,31 +132,32 @@ So, adapting our code:-
     displayList([X|L]):-
         write(X), nl,
         displayList(L).
+```
 
-* We reference our modules in __main.prolog__ using __use\_module/1__.
+* We reference our modules in __main.prolog__ using __use\_module/1__. E.g.:-
 
-E.g.:-
-
+```prolog
     :- use_module('printActors.prolog').
     :- use_module('printMovies.prolog').
+```
 
 * We could also access them using __use\_module/2__, which we can use to define which
-  predicates we want from the module.
+  predicates we want from the module. E.g.:-
 
-E.g.:-
-
+```prolog
     :- use_module('printActors.prolog',[printActors/1]).
     :- use_module('printMovies.prolog',[printMovies/1]).
+```
 
-* Now, when we load __main.prolog__, we get quite a different response.
+* Now, when we load __main.prolog__, we get quite a different response. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- ['main.prolog'].
     %  printActors.prolog compiled into printActors 0.00 sec, 2 clauses
     %  printMovies.prolog compiled into printMovies 0.00 sec, 4 clauses
     % main.prolog compiled 0.00 sec, 10 clauses
     true.
+```
 
 ### Libraries ###
 
@@ -163,7 +170,9 @@ E.g.:-
 
 E.g., you could put the following at the top of your file to load the __lists__ library:-
 
+```prolog
     :- use_module(library(lists)).
+```
 
 12.2 Writing to Files
 ---------------------
@@ -172,9 +181,11 @@ E.g., you could put the following at the top of your file to load the __lists__ 
 
 E.g.:-
 
+```prolog
     open('hogwarts.txt',write,Stream),
     write(Stream,'Hogwarts'), nl(Stream),
     close(Stream).
+```
 
 * Here we create + open a file 'hogwarts.txt' for writing, putting the stream value into
   __Stream__, write the string 'Hogwarts' to the file, add a newline via __nl/1__, then close
@@ -193,10 +204,9 @@ E.g.:-
     ravenclaw.
     slytherin.
 
-* We can write code to read this.
+* We can write code to read this. E.g.:-
 
-E.g.:-
-
+```prolog
     main:-
         open('houses.txt',read,Stream),
         read(Stream,House1),
@@ -209,11 +219,11 @@ E.g.:-
     ?- main.
     [gryffindor,hufflepuff,ravenclaw,slytherin]
     true.
+```
 
-* Can we read these without having to know the length of the file upfront? Yes we can.
+* Can we read these without having to know the length of the file upfront? Yes we can. E.g.:-
 
-E.g.:-
-
+```prolog
     main:-
         open('houses.txt',read,Stream),
         read_houses(Stream,Houses),
@@ -227,13 +237,13 @@ E.g.:-
         \+ at_end_of_stream(Stream),
         read(Stream,X),
         read_houses(Stream,L).
+```
 
 * If we want to read input without them having to be in Prolog terms, things get trickier - we
   have to read things on the level of characters. We can use __atom\_codes/2__ to convert a
-  collection of integers into a corresponding atom.
+  collection of integers into a corresponding atom. E.g.:-
 
-E.g.:-
-
+```prolog
     readWord(InStream,W):-
         get_code(InStream,Char),
         checkCharAndReadRest(Char,Chars,InStream),
@@ -254,3 +264,4 @@ E.g.:-
     checkCharAndReadRest(Char,[Char|Chars],InStream):-
         get_code(InStream,NextChar),
         checkCharAndReadRest(NextChar,Chars,InStream).
+```

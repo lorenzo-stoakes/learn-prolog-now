@@ -14,45 +14,44 @@ Chapter 11 - Database Manipulation
 11.1 Database Manipulation
 --------------------------
 
-* There are four database manipulation commands.
+* There are four database manipulation commands:-
 
-E.g.:-
-
+```prolog
     assert
     retract
     asserta
     assertz
+```
 
-* If we start with an empty database, and give the __listing__ command, we get the following.
+* If we start with an empty database, and give the __listing__ command, we get the following:-
 
-E.g.:-
-
+```prolog
     ?- listing.
     true.
+```
 
-* Now suppose we give the following command.
+* Now suppose we give the following command:-
 
-E.g.:-
-
+```prolog
     ?- assert(happy(mia)).
     true.
+```
 
 * What's interesting here is not that it succeeds, but rather its side-effect. If we now try
   the __listing__ command, we get:-
 
-E.g.:-
-
+```prolog
     ?- listing.
 
     :- dynamic happy/1.
 
     happy(mia).
     true.
+```
 
 * So __happy(mia)__ has now entered into the database. Let's try some more.
 
-E.g.:-
-
+```prolog
     ?- assert(happy(vincent)).
     true.
 
@@ -75,6 +74,7 @@ E.g.:-
     happy(butch).
     happy(vincent).
     true.
+```
 
 * So all the facts that we've asserted are now in the knowledge base. Note that
   __happy(vincent)__ is in the KB twice. As we asserted it twice, this makes sense.
@@ -92,20 +92,21 @@ E.g.:-
 
 * Let's say we want to assert the rule that everybody who is happy is naive.
 
-E.g.:-
-
+```prolog
     naive(X):- happy(X).
+```
 
 We can do this via:-
 
+```prolog
     assert((naive(X):- happy(X))).
+```
 
 Note that we place the rule we're asserting in parentheses.
 
 * If we ask for a listing we see that this has been added.
 
-E.g.:-
-
+```prolog
     ?- listing.
 
     :- dynamic naive/1.
@@ -121,11 +122,11 @@ E.g.:-
     happy(butch).
     happy(vincent).
     true.
+```
 
 * We can also __retract__ things from the database.
 
-E.g.:-
-
+```prolog
     ?- retract(happy(marcellus)).
     true.
 
@@ -143,9 +144,11 @@ E.g.:-
     happy(butch).
     happy(vincent).
     true.
+```
 
 And if we remove __happy(vincent)__:-
 
+```prolog
     ?- retract(happy(vincent)).
     true .
 
@@ -162,13 +165,14 @@ And if we remove __happy(vincent)__:-
     happy(butch).
     happy(vincent).
     true.
+```
 
 * Note that only the first occurrence of __happy(vincent)__ was removed.
 
-* If we want to remove all of our assertions for a given predicate, we can use a variable.
+* If we want to remove all of our assertions for a given predicate, we can use a
+  variable. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- retract(happy(X)).
     X = mia ;
     X = butch ;
@@ -184,13 +188,13 @@ E.g.:-
     :- dynamic happy/1.
 
     true.
+```
 
 * If we want to control where the asserted material is placed, we can use __assertz__ and
   __asserta__. __assertz__ places asserted material at the end of the database, whereas
-  __asserta__ places it at the beginning.
+  __asserta__ places it at the beginning. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- assert(p(b)),assertz(p(c)),asserta(p(a)).
     true.
 
@@ -202,12 +206,12 @@ E.g.:-
     p(b).
     p(c).
     true.
+```
 
 * We can use database manipulation for *memoisation*, i.e. caching results between
-  computations.
+  computations. E.g.:-
 
-E.g.:-
-
+```prolog
     :- dynamic lookup/3.
 
     add_and_square(X,Y,Res):-
@@ -216,19 +220,21 @@ E.g.:-
     add_and_square(X,Y,Res):-
         Res is (X+Y)*(X+Y),
         assert(lookup(X,Y,Res)).
+```
 
 Now let's try some queries:-
 
+```prolog
     ?- add_and_square(3,7,X).
     X = 100.
 
     ?- add_and_square(3,4,Y).
     Y = 49.
+```
 
-* If we run a listing, we'll see these memoised results.
+* If we run a listing, we'll see these memoised results. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- listing.
 
     :- dynamic lookup/3.
@@ -242,24 +248,24 @@ E.g.:-
     	A is (B+C)* (B+C),
     	assert(lookup(B, C, A)).
     true.
+```
 
 * We can remove these from the database without having to be prompted each time by using the
-  __retractall__ predicate.
+  __retractall__ predicate. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- retractall(lookup(_,_,_)).
     true.
+```
 
 * Be careful with manipulating the database - this can lead to confusing, messy programs.
 
 11.2 Collecting Solutions
 -------------------------
 
-* Often, there can be multiple solutions to a query.
+* Often, there can be multiple solutions to a query. E.g.:-
 
-E.g.:-
-
+```prolog
     child(martha,charlotte).
     child(charlotte,caroline).
     child(caroline,laura).
@@ -267,19 +273,24 @@ E.g.:-
 
     descend(X,Y):- child(X,Y).
     descend(X,Y):- child(X,Z), descend(Z,Y).
+```
 
 If we run the query:-
 
+```prolog
     ?- descend(martha, X).
+```
 
 We get multiple queries, one-by-one, which we have to iterate through, e.g.:-
 
+```prolog
     ?- descend(martha,X).
     X = charlotte ;
     X = caroline ;
     X = laura ;
     X = rose ;
     false.
+```
 
 * It would be nice to have all of these results in one go in a neat, usable form. Prolog has 3
   predicates which can help us with this - __findall__, __bagof__, and __setof__. Essentially,
@@ -291,54 +302,53 @@ We get multiple queries, one-by-one, which we have to iterate through, e.g.:-
 
 * The job of __findall__ is to provide a list __List__ of the objects __Object__ that satisfy
   the goal __Goal__. Often __Object__ is a variable, in which case __findall__ finds all
-  instantiations of __Object__ which satisfy __Goal__.
+  instantiations of __Object__ which satisfy __Goal__. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- findall(X,descend(martha,X),L).
     L = [charlotte, caroline, laura, rose].
+```
 
 * __Object__ doesn't have to be a variable, it might be a complex term which contains a
-  variable that also occurs in __Goal__.
+  variable that also occurs in __Goal__. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- findall(fromMartha(X),descend(martha,X),L).
     L = [fromMartha(charlotte), fromMartha(caroline), fromMartha(laura), fromMartha(rose)].
+```
 
-* What if we ask __findall__ for a situation which cannot be satisfied?
+* What if we ask __findall__ for a situation which cannot be satisfied? E.g.:-
 
-E.g.:-
-
+```prolog
     ?- findall(X,descend(mary,X),L).
     L = [].
+```
 
 We simply get the empty list back.
 
 * Typically, we want to share variables between the first two arguments of __findall__, as we
   are actually interested in the solutions which satisfy the goal. However, this is not always
-  the case. Perhaps we are only interested in the number of descendants Martha has.
+  the case. Perhaps we are only interested in the number of descendants Martha has. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- findall(Y,descend(martha,X),Z),length(Z,N).
     Z = [_G991, _G988, _G985, _G982],
     N = 4.
+```
 
 ### The bagof/3 Predicate ###
 
-* The __findall/3__ predicate is useful, but somewhat crude.
+* The __findall/3__ predicate is useful, but somewhat crude. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- findall(Child,descend(Mother,Child),List).
     List = [charlotte, caroline, laura, rose, caroline, laura, rose, laura, rose|...].
+```
 
 * This is correct (though truncated), however it'd be nice to have a separate list for each
-  different instantiation of __Mother__. __bagof__ will let us do this.
+  different instantiation of __Mother__. __bagof__ will let us do this. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- bagof(Child,descend(Mother,Child),List).
     Mother = caroline,
     List = [laura, rose] ;
@@ -348,14 +358,15 @@ E.g.:-
     List = [rose] ;
     Mother = martha,
     List = [charlotte, caroline, laura, rose].
+```
 
 * This tells us each set of instantiations we require. It's possible to revert __bagof__'s
-  behaviour to that of __findall__ if we require.
+  behaviour to that of __findall__ if we require. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- bagof(Child,Mother^descend(Mother,Child),List).
     List = [charlotte, caroline, laura, rose, caroline, laura, rose, laura, rose|...].
+```
 
 Here we've used the __^__ operator to say we don't care about __Mother__
 instantiations. Obviously, in a situation like this you'd be better off simply using
@@ -363,28 +374,31 @@ __findall__, but this option is there, and obviously you can selectively choose 
 you don't care about.
 
 * It'd be nice if we could get the best of both worlds - see the individual instantiations we
-  require to get the results we're interested in *and* collect everything into one list.
+  require to get the results we're interested in *and* collect everything into one list. We
+  can, e.g.:-
 
-We can, e.g.:-
-
+```prolog
     ?- findall(List,bagof(Child,descend(Mother,Child),List),Z).
     Z = [[laura, rose], [caroline, laura, rose], [rose], [charlotte, caroline, laura, rose]].
+```
 
 We can do this with __bagof__ too:-
 
+```prolog
     ?- bagof(List,Child^Mother^bagof(Child,descend(Mother,Child),List),Z).
     Z = [[laura, rose], [caroline, laura, rose], [rose], [charlotte, caroline, laura, rose]].
+```
 
 * Note that __bagof/3__ will return __false__ if the query fails, unlike __findall/3__ which
-  will return the empty list.
+  will return the empty list. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- findall(X,descend(mary,X),L).
     L = [].
 
     ?- bagof(X,descend(mary,X),L).
     false.
+```
 
 ### The setof/3 Predicate ###
 
@@ -392,26 +406,30 @@ E.g.:-
 
 E.g., consider the following KB:-
 
+```prolog
     age(harry,13).
     age(draco,14).
     age(ron,13).
     age(hermione,13).
     age(dumbledore,60).
     age(hagrid,30).
+```
 
 * Now let's say we wanted to get the list of people whose age is recorded in the database.
 
 We could do this via:-
 
+```prolog
     ?- findall(X,age(X,Y),L).
     L = [harry, draco, ron, hermione, dumbledore, hagrid].
+```
 
-* However, perhaps we wanted this list to be sorted, in that case we can use __setof__.
+* However, perhaps we wanted this list to be sorted, in that case we can use __setof__. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- setof(X,Y^age(X,Y),L).
     L = [draco, dumbledore, hagrid, harry, hermione, ron].
+```
 
 Again, we use the __^__ operator to indicate that we're not interested in __Y__.
 
@@ -419,17 +437,19 @@ Again, we use the __^__ operator to indicate that we're not interested in __Y__.
 
 Again, we can do this with findall:-
 
+```prolog
     ?- findall(Y,age(X,Y),L).
     L = [13, 14, 13, 13, 60, 30].
+```
 
 However, this is messy - duplicated values and no ordering.
 
-* Let's try this with __setof__.
+* Let's try this with __setof__. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- setof(Y,X^age(X,Y),L).
     L = [13, 14, 30, 60].
+```
 
 * As with __bagof__, __setof__ will return __false__ rather than the empty list if the goal
   cannot be fulfilled.

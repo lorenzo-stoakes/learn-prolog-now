@@ -18,34 +18,34 @@ Chapter 6 - More Lists
 * Declaratively, __append__ will hold when __L3__ in __append(L1,L2,L3)__ is equal to __L1__
   and __L2__ appended together.
 
-E.g.:-
-
+```prolog
     ?- append([a,b,c],[1,2,3],[a,b,c,1,2,3]).
     true.
+```
 
 * Obviously, you're more likely to use the predicate procedurally to append two lists together.
 
-E.g.:-
-
+```prolog
     ?- append([1,2],[3],R).
     R = [1, 2, 3].
+```
 
-* Actually __append__ is of considerably more use than this, and can be used to split up a list. 
+* Actually __append__ is of considerably more use than this, and can be used to split up a
+  list.  Its definition is:-
 
-Its definition is:-
-
+```prolog
     append([],L2,L2).
     append([H|T],L2,[H|L3]):-
         append(T,L2,L3).
+```
 
 This seems odd, but what is happening is that we're saying at each recursive step that our
 final parameter unifies with something which consists of the head of the first list combined
 with a tail of some value. As we recurse down we end up with H1|(H2|(H3|(...|(Hn|L2)))), and as
 we return from recursive calls, all the head/tail appends are performed giving us our combined
-list.
+list. E.g. a trace:-
 
-E.g. a trace:-
-
+```prolog
     [trace]  ?- append_([1,2],[3,4],R).
        Call: (6) append_([1, 2], [3, 4], _G340) ? 
        Call: (7) append_([2], [3, 4], _G419) ? 
@@ -54,15 +54,15 @@ E.g. a trace:-
        Exit: (7) append_([2], [3, 4], [2, 3, 4]) ? 
        Exit: (6) append_([1, 2], [3, 4], [1, 2, 3, 4]) ? 
     R = [1, 2, 3, 4].
+```
 
 * We're essentially using unification to build a structure.
 
 ### Using Append ###
 
-* We can use __append/3__ to split up a list into two consecutive lists.
+* We can use __append/3__ to split up a list into two consecutive lists. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- append(X,Y,[a,b,c,d]).
     X = [],
     Y = [a, b, c, d] ;
@@ -75,11 +75,11 @@ E.g.:-
     X = [a, b, c, d],
     Y = [] ;
     false.
+```
 
-* Or to find the prefixes of a list.
+* Or to find the prefixes of a list. E.g.:-
 
-E.g.:-
-
+```prolog
     prefix(P,L):- append(P,_,L).
 
     ?- prefix(X,[1,2,3]).
@@ -88,9 +88,11 @@ E.g.:-
     X = [1, 2] ;
     X = [1, 2, 3] ;
     false.
+```
 
 Let's look at a trace:-
 
+```prolog
     [trace]  ?- prefix_(X,[1,2,3]).
        Call: (6) prefix_(_G995, [1, 2, 3]) ? 
        Call: (7) append_(_G995, _G1075, [1, 2, 3]) ? 
@@ -125,11 +127,11 @@ Let's look at a trace:-
        Fail: (7) append_(_G995, _G1075, [1, 2, 3]) ? 
        Fail: (6) prefix_(_G995, [1, 2, 3]) ? 
     false.
+```
 
-* And the suffixes.
+* And the suffixes. E.g.:-
 
-E.g.:-
-
+```prolog
     suffix(S,L):- append(_,S,L).
 
     ?- suffix(X,[1,2,3]).
@@ -138,9 +140,11 @@ E.g.:-
     X = [3] ;
     X = [] ;
     false.
+```
 
 Again, a trace:-
 
+```prolog
     [trace]  ?- suffix_(X,[1,2,3]).
        Call: (6) suffix_(_G335, [1, 2, 3]) ? 
        Call: (7) append_(_G414, _G335, [1, 2, 3]) ? 
@@ -175,10 +179,13 @@ Again, a trace:-
        Fail: (7) append_(_G414, _G335, [1, 2, 3]) ? 
        Fail: (6) suffix_(_G335, [1, 2, 3]) ? 
     false.
+```
 
 * We can also define a __sublist__ predicate, using the follows:-
 
+```prolog
     sublist(SubL,L):- suffix(S,L), prefix(SubL,S).
+```
 
 I.e., __SubL__ is a sublist of __L__ if there is some suffix __S__ of __L__ of which __SubL__
 is a prefix. The program isn't explicitly using __append/3__, but under the covers, that's what
@@ -210,13 +217,16 @@ rev(T) + H.
 
 This is implemented as such:-
 
+```prolog
     revNaive([], []).
     revNaive([H|T], R):-
         revNaive(T, Rnew),
         append_(Rnew,[H],R).
+```
 
 Let's look at a trace of this running:-
 
+```prolog
     [trace]  ?- revNaive([1,2,3],R).
        Call: (6) revNaive([1, 2, 3], _G542) ? 
        Call: (7) revNaive([2, 3], _G624) ? 
@@ -239,9 +249,11 @@ Let's look at a trace of this running:-
        Exit: (7) append_([3, 2], [1], [3, 2, 1]) ? 
        Exit: (6) revNaive([1, 2, 3], [3, 2, 1]) ? 
     R = [3, 2, 1].
+```
 
 * We're better off using an accumulator, as previously implemented :-) :-
 
+```prolog
     rev([], R, R).
 
     rev([H|T], A, R):-
@@ -249,9 +261,11 @@ Let's look at a trace of this running:-
 
     rev(L, R):-
         rev(L, [], R).
+```
 
 Under trace:-
 
+```prolog
     [trace]  ?- rev([1,2,3],R).
        Call: (6) rev([1, 2, 3], _G820) ? 
        Call: (7) rev([1, 2, 3], [], _G820) ? 
@@ -264,3 +278,4 @@ Under trace:-
        Exit: (7) rev([1, 2, 3], [], [3, 2, 1]) ? 
        Exit: (6) rev([1, 2, 3], [3, 2, 1]) ? 
     R = [3, 2, 1].
+```

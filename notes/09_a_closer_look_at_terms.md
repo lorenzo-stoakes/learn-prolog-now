@@ -13,36 +13,37 @@ Chapter 9 - A Closer Look at Terms
 9.1 Comparing Terms
 -------------------
 
-* Prolog has an important built-in predicate for comparing terms, namely __==/2__.
+* Prolog has an important built-in predicate for comparing terms, namely __==/2__. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- a == a.
     true.
+```
 
-* Now let's compare __==/2__ with __=/2__. __=/2__ determines whether two terms can be unified.
+* Now let's compare __==/2__ with __=/2__. __=/2__ determines whether two terms can be
+  unified. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- X=Y.
     X = Y.
+```
 
-* Let's look at queries involving instantiated variables.
+* Let's look at queries involving instantiated variables. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- a=X, a==X.
     X = a.
+```
 
 Here, the first conjunct binds __X__ to __a__, so that when __a==X__ is evaluated, the left and
 right hand sides are exactly the same Prolog object and thus __a==X__ succeeds.
 
-* Similarly.
+* Similarly:-
 
-E.g.:-
-
+```prolog
     ?- X=Y, X==Y.
     X = Y.
+```
 
 Here, the first conjunct unifies __X__ and __Y__, and by the time the second is evaluated, the
 two variables are exactly the same Prolog object.
@@ -52,10 +53,9 @@ two variables are exactly the same Prolog object.
   then __term1 = term2__ will succeed also.
 
 * Another important predicate to be aware of is __\\==/2__, which is defined as such that it
-  succeeds precisely where __==/2__ fails.
+  succeeds precisely where __==/2__ fails. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- a \== a.
     false.
 
@@ -63,6 +63,7 @@ E.g.:-
     true.
 
     ?- X \== Y.
+```
 
 9.2 Terms With a Special Notation
 ---------------------------------
@@ -72,10 +73,9 @@ E.g.:-
 
 ### Arithmetic Terms ###
 
-* Arithmetic terms are a particularly good example of this.
+* Arithmetic terms are a particularly good example of this. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- 2+3 == +(2,3).
     true.
 
@@ -87,32 +87,32 @@ E.g.:-
 
     ?- 2*(7+2) == *(2, +(7,2)).
     true.
+```
 
 * In short - the familiar arithmetic notation is there for convenience, however it is, in
   effect, no different from usual term notation.
 
-* This is equally applicable to the comparison predicates <, =<, =:=, =\=, > and >=.
+* This is equally applicable to the comparison predicates <, =<, =:=, =\=, > and >=. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- (2 < 3) == <(2,3).
+```
 
-* There is potential for ambiguity with expressions like,
+* There is potential for ambiguity with expressions like, e.g.:-
 
-E.g.:-
-
+```prolog
     ?- 2 =:= 3 == =:=(2,3).
+```
 
-So brackets are preferred for such situations.
+So brackets are preferred for such situations. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- (2 =:= 3) == =:=(2,3).
+```
 
-To clarify, our equality operators are as follows.
+To clarify, our equality operators are as follows:-
 
-E.g.:-
-
+```
     =   The unification predicate. Succeeds only if it can unify its arguments, otherwise fails.
 
     \=  Negation of the unification predicate.
@@ -124,14 +124,14 @@ E.g.:-
     =:= The arithmetic equality predicate. Succeeds if its arguments evaluate to the same integer.
 
     =\= The arithmetic inequality predicate. Succeeds if its arguments evaluate to different integers.
+```
 
 ### Lists as Terms ###
 
 * Lists are an example of Prolog providing a simplified syntax for an otherwise more cumbersome
-  construct. First off, we have the head/tail thing.
+  construct. First off, we have the head/tail thing. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- [a,b,c,d] == [a|[b,c,d]].
     true.
 
@@ -146,6 +146,7 @@ E.g.:-
 
     ?- [a,b,c,d] == [a,b,c,d|[]].
     true.
+```
 
 Looking at this, it's hard to know how Prolog represents this list internally.
 
@@ -159,10 +160,9 @@ Looking at this, it's hard to know how Prolog represents this list internally.
   term, and __list__ is any list. If __list__ has length n, then __.(term, list)__ has length
   n+1.
 
-* Looking at some examples.
+* Looking at some examples:-
 
-E.g.:-
-
+```prolog
     ?- .(a,[]) == [a].
     true.
 
@@ -189,6 +189,7 @@ E.g.:-
 
     ?- .(.(a,[]),.(.(b,.(c,[])),[])) == [[a],[b,c]].
     true.
+```
 
 9.3 Examining Terms
 -------------------
@@ -201,19 +202,18 @@ E.g.:-
 
 ### Types of Terms ###
 
-* Recall, there are four different *kinds*.
+* Recall, there are four different *kinds*. E.g.:-
 
-E.g.:-
-
+```
     Variables
     Atoms
     Numbers
     Complex Terms
+```
 
-* Here are the tests in question.
+* Here are the tests in question:-
 
-E.g.:-
-
+```
     atom/1    Is the argument an atom?
     integer/1 Is the argument an integer?
     float/1   Is the argument a floating point number?
@@ -221,11 +221,11 @@ E.g.:-
     atomic/1  Is the argument a constant?
     var/1     Is the argument an uninstantiated variable?
     nonvar/1  Is the argument an instantiated variable, or another term that is not an uninstantiated variable?
+```
 
-* Let's play.
+* Let's play. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- atom(a).
     true.
 
@@ -237,18 +237,18 @@ E.g.:-
 
     ?- atom(X).
     false.
+```
 
-* What if we instantiate __X__?
+* What if we instantiate __X__? E.g.:-
 
-E.g.:-
-
+```prolog
     ?- X = a, atom(X).
     X = a.
+```
 
-* Integers
+* Integers:-
 
-E.g.:-
-
+```prolog
     ?- integer(15).
     true.
 
@@ -263,11 +263,11 @@ E.g.:-
 
     ?- integer(X).
     false.
+```
 
-* Floats
+* Floats:-
 
-E.g.:-
-
+```prolog
     float(1.5).
     true.
 
@@ -285,11 +285,11 @@ E.g.:-
 
     ?- float(X).
     false.
+```
 
-* Var
+* Var:-
 
-E.g.:-
-
+```prolog
     ?- var(X).
     true.
 
@@ -304,11 +304,11 @@ E.g.:-
 
     ?- var(loves(vincent,mia)).
     false.
+```
 
 * Nonvar
 
-E.g.:-
-
+```prolog
     ?- nonvar(X).
     false.
 
@@ -323,21 +323,21 @@ E.g.:-
 
     ?- nonvar(loves(vincent,mia)).
     true.
+```
 
-* A complex term which contains uninstantiated variables is not itself an uninstantiated variable.
+* A complex term which contains uninstantiated variables is not itself an uninstantiated variable. So:-
 
-So:-
-
+```prolog
     ?- var(loves(_, mia)).
     false.
 
     ?- nonvar(loves(_, mia)).
     true.
+```
 
-* You have to be careful with the order of execution.
+* You have to be careful with the order of execution. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- X=a, var(X).
     false.
 
@@ -349,29 +349,29 @@ E.g.:-
 
     ?- nonvar(X), X=a.
     false.
+```
 
 ### The Structure of Terms ###
 
-* We can use the predicate __functor/3__ to determine the arity and functor of a complex term.
+* We can use the predicate __functor/3__ to determine the arity and functor of a complex term. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- functor(f(a,b),F,A).
     F = f,
     A = 2.
+```
 
-* If we do this for a list, we get back __./2__:-
+* If we do this for a list, we get back __./2__. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- functor([a,b],F,A).
     F = '.',
     A = 2.
+```
 
-* What happens if we try __functor/2__ with constants?
+* What happens if we try __functor/2__ with constants? E.g.:-
 
-E.g.:-
-
+```prolog
     ?- functor(123456,F,A).
     F = 123456,
     A = 0.
@@ -379,16 +379,17 @@ E.g.:-
     ?- functor(1.23,F,A).
     F = 1.23,
     A = 0.
+```
 
 * So we can use functor to examine constants, which are treated like 0-arity terms.
 
 * We can use __functor/3__ to construct terms by specifying the second and third term and
-  leaving the first undetermined.
+  leaving the first undetermined. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- functor(T,f,7).
     T = f(_G642, _G643, _G644, _G645, _G646, _G647, _G648).
+```
 
 * Note that we have to specify either the first or the second and third arguments, otherwise
   Prolog will fail with an error message - this is sensible, it doesn't really make sense to
@@ -396,43 +397,42 @@ E.g.:-
 
 * Note we don't have a predicate for a complex term, let's create one:-
 
-E.g.:-x
-
+```prolog
     complexterm(X):-
         nonvar(X),
         functor(X,_,A),
         A > 0.
+```
 
 * What about arguments? In addition to __functor/3__, Prolog provides __arg/3__ which let's you
-  access the nth argument of a complex term using __arg(n,term,value)__.
+  access the nth argument of a complex term using __arg(n,term,value)__. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- arg(2, loves(vincent,mia), X).
     X = mia.
+```
 
 * We can instantiate an argument:-
 
-E.g.:-
-
+```prolog
     ?- arg(2, loves(vincent,X), mia).
     X = mia.
+```
 
 * Accessing arguments which don't exist fails:-
 
-E.g.:-
-
+```prolog
     ?- arg(0, loves(vincent,mia), X).
     false.
 
     ?- arg(3, loves(vincent,mia), X).
     false.
+```
 
 * We also have the __=../2__ operator which takes a complex term and returns a list with the
-  functor of the complex term as the head of the list and the arguments as the tail.
+  functor of the complex term as the head of the list and the arguments as the tail. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- foo(bar,baz) =.. X.
     X = [foo, bar, baz].
 
@@ -441,6 +441,7 @@ E.g.:-
 
     ?- foo(bar,X) =.. Y.
     Y = [foo, bar, X].
+```
 
 * This predicate is also known as *univ*.
 
@@ -450,34 +451,34 @@ E.g.:-
 
 * Strings in Prolog are represented by a list of ASCII codes. Since it'd be a pain to have to
   use this approach to write string literals, Prolog allows you to define strings with double
-  quotes.
+  quotes. E.g.:-
 
-E.g.:-
-
+```prolog
     ?- X = "foo".
     X = [102, 111, 111].
+```
 
 * A particularly useful predicate is __atom\_codes/2__, which converts an atom into a
-  string.
+  string. E.g.:-
 
-E.g.:-
-
+```prolog
     ? atom_codes(foo,X).
     X = [102, 111, 111].
+```
 
 * You can work the other way:-
 
-E.g.:-
-
+```prolog
     ?- atom_codes(A, "foo").
     A = foo.
+```
 
-* __number\_codes/2__ is also available.
+* __number\_codes/2__ is also available:-
 
-E.g.:-
-
+```prolog
     ?- number_codes(345,X), X == "345".
     X = [51, 52, 53].
+```
 
 9.4 Operators
 -------------
@@ -486,34 +487,38 @@ E.g.:-
 
 ### Properties of Operators ###
 
-* Let's consider an expression.
+* Let's consider an expression:-
 
-E.g.:-
-
+```prolog
     is(11,+(2,*(3,3))).
+```
 
 We can write this as:-
 
+```prolog
     11 is 2+3*3.
+```
 
 * Functors that can be written between their arguments are called *infix operators*.
 
 * Operators in Prolog, like most languages, have *precedence*, which determines which operator
-  'wins out' when there is ambiguity between them.
+  'wins out' when there is ambiguity between them:-
 
-E.g.:-
-
+```prolog
     1 + 2 * 3
+```
 
-* We have two different possible interpretations of this,
+* We have two different possible interpretations of this, e.g.:-
 
-E.g.:-
-
+```prolog
     (1 + 2) * 3
+```
 
 And:-
 
+```prolog
     1 + (2 * 3)
+```
 
 Clearly, any sane person would prefer the latter to the former, so we need a way to resolve
 this ambiguity. A means of doing this is 'precedence', which defines which operator gets
@@ -529,7 +534,9 @@ CONFUSION: However, in Prolog *lower* precedence appears to do this, so + has hi
 than *, and thus + 'wins' out. This seems to somewhat make sense when you consider the prefix
 representation of the above:-
 
+```prolog
     +(1, *(2, 3))
+```
 
 Here it's clear that + is the dominant operator.
 
@@ -542,27 +549,39 @@ Here it's clear that + is the dominant operator.
 
 E.g.:-
 
+```prolog
     1 - 2 - 3
+```
 
 Is equivalent to:-
 
+```prolog
     (1 - 2) - 3
+```
 
 Not:-
 
+```prolog
     1 - (2 - 3)
+```
 
 And:-
 
+```prolog
     1 ^ 2 ^ 3
+```
 
 Is equivalent to:-
 
+```prolog
     1 ^ (2 ^ 3)
+```
 
 Not:-
 
+```prolog
     (1 ^ 2) ^ 3
+```
 
 * In Prolog, the rule is that when an operator is left-associative, the expression to the right
   of the operator must have *lower* precedence than the operator itself, whereas the expression
@@ -571,16 +590,22 @@ Not:-
 
 E.g.:-
 
+```prolog
     1 + 2 + 3
+```
 
 If we were to treat this as 1 + (2 + 3), then we'd end up with:-
 
+```prolog
     1 + +(2, 3)
+```
 
 I.e. an expression to the right of the + operator which has equal precedence to + (i.e. it *is*
 the same operator). This is illegal for a left-associative operator. So the only alternative is:-
 
+```prolog
     +(1, 2) + 3
+```
 
 CONFUSION: Presumably, the 3 here has lower precedence, again.
 
@@ -594,15 +619,21 @@ CONFUSION: Presumably, the 3 here has lower precedence, again.
 
 E.g.:-
 
+```prolog
     zed is_dead
+```    
 
 Rather than:-
 
+```prolog
     is_dead(zed)
+```
 
 You define operators in Prolog via the following syntax:-
 
+```prolog
     :- op(Precedence, Type, Name).
+```
 
 * Precedence is a number between 0 and 1200, the higher the number, the greater the precedence.
 
@@ -614,13 +645,14 @@ You define operators in Prolog via the following syntax:-
 These are the possible values for Type:-
 
     Infix:  xfx, xfy, yfx
-    Prefix:  fx, fy
-    Suffix:  xf, yf
+    Prefix: fx, fy
+    Suffix: xf, yf
 
 * Some examples of inbuilt operators.
 
 E.g.:-
 
+```prolog
     :-  op(1200, xfx,  [   :-, -->                                       ]).
     :-  op(1200,  fx,  [   :-, ?-                                        ]).
     :-  op(1100, xfy,  [    ;                                            ]).
@@ -630,6 +662,7 @@ E.g.:-
     :-  op( 500,  fx,  [    +,   -                                       ]).
     :-  op( 300, xfx,  [  mod                                            ]).
     :-  op( 200, xfy,  [    ^                                            ]).
+```
 
 * Note that this only defines the *syntax* of the declared operator, not the *semantics*,
   i.e. - you still need to determine what the operator does once you've declared its fancy
@@ -637,7 +670,9 @@ E.g.:-
 
 E.g.:-
 
+```prolog
     :- op(500, xf, is_dead).
 
     kill(marcellus,zed).
     is_dead(X) :- kill(_,X).
+```
