@@ -287,7 +287,7 @@ Here we're typing __;__ each time a result is returned by swipl.
 ```
 
 * The jealousy rule defines the rule that __X__ will be jealous of __Y__ if both __X__ and
-  __Y__ loves __Z__.
+  __Y__ love __Z__.
 
 * What's interesting about this rule is that it's stated in general terms - __X__, __Y__ and
   __Z__ can bind to anyone, and is not limited to specific people.
