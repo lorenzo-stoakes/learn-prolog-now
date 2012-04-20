@@ -43,49 +43,49 @@ Chapter 1 - Facts, Rules and Other Queries
 * How can we use KB1? By posing *queries*, i.e. asking questions about the information KB1
   contains. E.g., is Mia a woman?:-
 
-E.g.:-
-
+```prolog
     ?- woman(mia).
     true.
+```
 
 * Note the full stop is important. Without it prolog won't start working on the query.
 
 * Similarly:-
 
-E.g.:-
-
+```prolog
     ?- playsAirGuitar(jody).
     true.
     ?- playsAirGuitar(mia).
     false.
+```
 
 * If we ask about a property we don't know about we receive the following (in swipl):-
 
-E.g.:-
-
+```prolog
     ?- tattooed(jody).
     ERROR: toplevel: Undefined procedure: tattooed/1 (DWIM could not correct goal)
+```
 
 * We can query predicates too:-
 
-E.g.:-
-
+```prolog
     ?- party.
     true.
     ?- rockConcert.
     ERROR: toplevel: Undefined procedure: rockConcert/0 (DWIM could not correct goal)
+```
 
 ### Knowledge Base 2 ###
 
 * Let's look at another knowledge base:-
 
-E.g.:-
-
+```prolog
     happy(yolanda).
     listens2Music(mia).
     listens2Music(yolanda):- happy(yolanda).
     playsAirGuitar(mia):- listens2Music(mia).
     playsAirGuitar(yolanda):- listens2Music(yolanda).
+```
 
 * There are 2 facts here, happy and listens2Music. The last 3 items are rules.
 
@@ -102,9 +102,9 @@ E.g.:-
 
 * If a knowledge base contains a rule:-
 
-E.g.:-
-
+```prolog
     head :- body
+```
 
 And Prolog knows that the body follows from the information in the knowledge base, then Prolog
 can infer head.
@@ -113,20 +113,20 @@ can infer head.
 
 * An example is:-
 
-E.g.:-
-
+```prolog
     ?- playsAirGuitar(mia).
     true.
+```
 
 Here, though we've not explicitly recorded the fact that mia playsAirGuitar, Prolog has
 *inferred* that this is the case, as we have specified listens2Music(mia) as a fact.
 
 * Prolog can chain together uses of modus ponens.
 
-E.g.:-
-
+```prolog
     ?- playsAirGuitar(yolanda).
     true.
+```
 
 Here we know happy(yolanda) as a fact, and that listens2Music(yolanda) follows from this, and
 that playsAirGuitar(yolanda) follows from listens2Music(yolanda).
@@ -148,8 +148,7 @@ that playsAirGuitar(yolanda) follows from listens2Music(yolanda).
 
 * Let's look at the contents of Knowledge Base 3:-
 
-E.g.:-
-
+```prolog
     happy(vincent).
     listens2Music(butch).
     playsAirGuitar(vincent):-
@@ -159,17 +158,18 @@ E.g.:-
         happy(butch).
     playsAirGuitar(butch):-
         listens2Music(butch).
+```
 
 * There are two facts and three rules here.
 
 * We have the same three predicates as KB2, only we define them differently. Note
   particularly:-
 
-E.g.:-
-
+```prolog
     playsAirGuitar(vincent):-
         listens2Music(vincent),
         happy(vincent).
+```
 
 * This has two *goals* in its body.
 
@@ -180,10 +180,10 @@ E.g.:-
 
 * Thus:-
 
-E.g.:-
-
+```prolog
     ?- playsAirGuitar(vincent).
     false.
+```
 
 * Note spacing doesn't matter here.
 
@@ -192,25 +192,24 @@ E.g.:-
 
 Note that, due to modus ponens:-
 
-E.g.:-
-
+```prolog
     ?- playsAirGuitar(butch).
     true.
+```
 
 * We can also express logical disjunction as follows:-
 
-E.g.:-
-
+```prolog
     playsAirGuitar(butch):-
         happy(butch);
         listens2Music(butch).
+```
 
 ### Knowledge Base 4 ###
 
 * KB4:-
 
-E.g.:-
-
+```prolog
     woman(mia).
     woman(jody).
     woman(yolanda).
@@ -219,6 +218,7 @@ E.g.:-
     loves(mersellus,mia).
     loves(pumpkin,honey_bunny).
     loves(honey_bunny,pumpkin).
+```
 
 * This is just a collection of facts.
 
@@ -226,10 +226,10 @@ E.g.:-
 
 * We do introduce a novel query:-
 
-E.g.:-
-
+```prolog
     ?- woman(X).
     X = mia .
+```
 
 * The X is a variable.
 
@@ -251,21 +251,21 @@ E.g.:-
   which we could potentially obtain here. We can obtain these using the logical disjunction
   operator ';':-
 
-E.g.:-
-
+```prolog
     ?- woman(X).
     X = mia ;
     X = jody ;
     X = yolanda.
+```
 
 Here we're hitting ; each time a result is returned by swipl.
 
 * Let's try something more complicated:-
 
-E.g.:-
-
+```prolog
     ?- loves(marsellus,X), woman(X).
     X = mia.
+```
 
 * Prolog is very interesting, but at core the most important aspect of it is its ability to
   perform unification and return the values of variable bindings.
@@ -273,16 +273,16 @@ E.g.:-
 ### Knowledge Base 5 ###
 
 * We've see the use of variables in queries, however we can also use them in knowledge
-  bases.
+  bases. E.g. KB5:-
 
-E.g. KB5:-
-
+```prolog
     loves(vincent, mia).
     loves(marsellus, mia).
     loves(pumpkin, honey_bunny).
     loves(honey_bunny, pumpkin).
 
     jealous(X, Y):- loves(X, Z), loves(Y, Z).
+```
 
 * The jealousy rule defines the rule that X will be jealous of Y if both X and Y loves Z.
 
@@ -291,11 +291,11 @@ E.g. KB5:-
 
 * We can ask the following query:-
 
-E.g.:-
-
+```prolog
     ?- jealous(marsellus, W).
     W = vincent ;
     W = marsellus.
+```
 
 1.2 Prolog syntax
 -----------------
@@ -312,9 +312,9 @@ E.g.:-
 
 * An *atom* is either an identifier:-
 
-E.g.:-
-
+```
     [a-z][a-zA-Z0-9_]*
+```
 
 Or an arbitrary sequence of characters enclosed in single quotes (the sequence between the
 quotes is called the 'atom name').
@@ -326,9 +326,9 @@ meaning e.g. ';', ':-'.
 
 * A *variable* is:-
 
-E.g.:-
-
+```
     [A-Z][a-zA-Z0-9_]*
+```
 
 * The _ variable, the anonymous variable, is special. We discuss it later.
 
@@ -341,9 +341,9 @@ E.g.:-
 
 * We can just keep on nesting.
 
-E.g.:-
-
+```prolog
     hide(X, father(father(father(butch))))
+```
 
 Here the functor is hide, and it has two arguments: the variable __X__, and the complex term
 __father(father(father(butch)))__.
@@ -357,20 +357,20 @@ __father(father(father(butch)))__.
 * It's usual to refer to predicates with a suffix /N where N is the predicate's arity. E.g.,
   from KB2:-
 
-E.g.:-
-
+```prolog
     listens2Music/1
     happy/1
     playsAirGuitar/1
+```
 
 * Can obtain a listing of code using the following command:-
 
-E.g.:-
-
+```prolog
     listing.
+```
 
 * Can get all listing relating to a predicate by using a command like:-
 
-E.g.:-
-
+```prolog
     listing(listens2Music).
+```
