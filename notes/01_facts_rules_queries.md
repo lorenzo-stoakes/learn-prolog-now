@@ -35,8 +35,8 @@ Chapter 1 - Facts, Rules and Other Queries
 
 * We'll call this collection of facts KB1. It's our first example of a prolog program.
 
-* This program has names mia, jody and yolanda, and *properties* woman and playsAirGuitar and the
-  proposition party.
+* This program has names __mia__, __jody__ and __yolanda__, and *properties* __woman__ and
+  __playsAirGuitar__ and the proposition __party__.
 
 * Note that all the terms here start with a lower-case letter.
 
@@ -93,10 +93,10 @@ Chapter 1 - Facts, Rules and Other Queries
   Mia plays air guitar if she's listening to music and Yolanda plays air guitar if she's
   listening to music.
 
-* The ':-' should be read as 'if', or 'is implied by'.
+* The __:-__ should be read as *if*, or *is implied by*.
 
-* The part on the left of the ':-' is called the 'head' of the rule, and the part on the right
-  is called the 'body' of the rule.
+* The part on the left of the __:-__ is called the 'head' of the rule, and the part on the right
+  is called the *body* of the rule.
 
 * So in general, if the body of the rule is true, then the head of the rule is true too.
 
@@ -118,10 +118,10 @@ can infer head.
     true.
 ```
 
-Here, though we've not explicitly recorded the fact that mia playsAirGuitar, Prolog has
-*inferred* that this is the case, as we have specified listens2Music(mia) as a fact.
+Here, though we've not explicitly recorded the fact that __mia__ __playsAirGuitar__, Prolog has
+*inferred* that this is the case, as we have specified __listens2Music(mia)__ as a fact.
 
-* Prolog can chain together uses of modus ponens.
+* Prolog can chain together uses of modus ponens:-
 
 ```prolog
     ?- playsAirGuitar(yolanda).
@@ -137,12 +137,12 @@ this, and that __playsAirGuitar(yolanda)__ follows from __listens2Music(yolanda)
 * By chaining together applications of modus ponens in this way, Prolog can retrieve
   information which logically follows from the rules and facts recorded in the knowledge base.
 
-* The __happy__ predicate is defined using a single clause (a fact). The __listens2Music__ and
-  __playsAirGuitar__ predicates are formed of two clauses each (comprised of one fact + one
-  rule and two rules respectively.)
+* The __happy__ predicate is defined using a single *clause* (a fact). The __listens2Music__
+  and __playsAirGuitar__ *predicates* are formed of two clauses each (comprised of one fact +
+  one rule and two rules respectively.)
 
 * We can view a fact as a rule with an empty body - facts can be considered to be conditions
-  without antecedent conditions, or *degenerate rules*.
+  without antecedent conditions, or *degenerate* rules.
 
 ### Knowledge Base 3 ###
 
@@ -173,10 +173,12 @@ this, and that __playsAirGuitar(yolanda)__ follows from __listens2Music(yolanda)
 
 * This has two *goals* in its body.
 
-* It's important to note the comma n this, it separates the two goals listens2Music(vincent)
-  and happy(vincent). This is the way *logical conjunction* (and) is expressed in prolog.
+* It's important to note the comma in this, it separates the two goals
+  __listens2Music(vincent)__ and __happy(vincent)__. This is the way *logical conjunction*
+  (logical and) is expressed in prolog.
 
-* This rule therefore reads 'Vincent plays air guitar if he listens to music and he is happy'.
+* This rule therefore reads 'Vincent plays air guitar if he listens to music *and* he is
+  happy'.
 
 * Thus:-
 
@@ -188,7 +190,7 @@ this, and that __playsAirGuitar(yolanda)__ follows from __listens2Music(yolanda)
 * Note spacing doesn't matter here.
 
 * Note Butch's predicates are separated into two separate statements. This is equivalent of
-  logical disjunction - 'or'.
+  *logical disjunction* (logical or).
 
 Note that, due to modus ponens:-
 
@@ -231,7 +233,7 @@ Note that, due to modus ponens:-
     X = mia .
 ```
 
-* The X is a variable.
+* The __X__ is a variable.
 
 * Any word beginning with an uppercase letter in prolog is a variable.
 
@@ -242,14 +244,14 @@ Note that, due to modus ponens:-
 * Prolog answers this query by working through KB4, from top to bottom, attempting to *unify*
   (match) the expression woman(X) with the information KB4 contains.
 
-* The first item in the knowledge base is woman(mia), so Prolog unifies X with mia.
+* The first item in the knowledge base is __woman(mia)__, so Prolog unifies __X__ with __mia__.
 
 * We could also say Prolog *instantiates* X to mia, or *binds* X to mia rather than unify.
 
 * We can do better than this - the whole point of variables is that they can stand for, or
   unify with, different things. There is information about other women in the knowledge base
   which we could potentially obtain here. We can obtain these using the logical disjunction
-  operator ';':-
+  operator __;__:-
 
 ```prolog
     ?- woman(X).
@@ -258,7 +260,7 @@ Note that, due to modus ponens:-
     X = yolanda.
 ```
 
-Here we're hitting ; each time a result is returned by swipl.
+Here we're typing __; each__ time a result is returned by swipl.
 
 * Let's try something more complicated:-
 
@@ -267,8 +269,8 @@ Here we're hitting ; each time a result is returned by swipl.
     X = mia.
 ```
 
-* Prolog is very interesting, but at core the most important aspect of it is its ability to
-  perform unification and return the values of variable bindings.
+* At the core of Prolog is its ability to perform unification and return the values of variable
+  bindings.
 
 ### Knowledge Base 5 ###
 
@@ -284,10 +286,11 @@ Here we're hitting ; each time a result is returned by swipl.
     jealous(X, Y):- loves(X, Z), loves(Y, Z).
 ```
 
-* The jealousy rule defines the rule that X will be jealous of Y if both X and Y loves Z.
+* The jealousy rule defines the rule that __X__ will be jealous of __Y__ if both __X__ and
+  __Y__ loves __Z__.
 
-* What's interesting about this rule is that it's stated in general terms - X, Y and Z can bind
-  to anyone, and is not limited to specific people.
+* What's interesting about this rule is that it's stated in general terms - __X__, __Y__ and
+  __Z__ can bind to anyone, and is not limited to specific people.
 
 * We can ask the following query:-
 
@@ -306,7 +309,7 @@ Here we're hitting ; each time a result is returned by swipl.
 * The answer is - *terms*. There are four kinds of terms in Prolog:- atoms, numbers, variables
   and complex terms (or structures).
 
-* Atoms and numbers are considered to be *constants*.
+* Atoms and numbers are *constants*.
 
 * Constants and variables make up the *simple terms* of Prolog.
 
@@ -319,8 +322,8 @@ Here we're hitting ; each time a result is returned by swipl.
 Or an arbitrary sequence of characters enclosed in single quotes (the sequence between the
 quotes is called the 'atom name').
 
-Or a string of special characters, e.g. @=, ====>, :-. Some of these atoms have a predefined
-meaning e.g. ';', ':-'.
+Or a string of special characters, e.g. __@=__, __====>__, __:-__. Some of these atoms have a
+predefined meaning e.g. __;__, __:-__.
 
 * A *number* is as you'd expect.
 
@@ -330,10 +333,10 @@ meaning e.g. ';', ':-'.
     [A-Z][a-zA-Z0-9_]*
 ```
 
-* The _ variable, the anonymous variable, is special. We discuss it later.
+* The __\___ variable, the anonymous variable, is special. We discuss it later.
 
 * *Complex terms* or *structures* are built out of a *functor* followed by a sequence of
-   arguments. We've seen this already, e.g. listens2Music(mia).
+   arguments. We've seen this already, e.g. __listens2Music(mia)__.
 
 * You can't have whitespace between the functor and its arguments.
 
