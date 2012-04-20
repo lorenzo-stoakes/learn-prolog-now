@@ -95,7 +95,7 @@ Chapter 1 - Facts, Rules and Other Queries
 
 * The __:-__ should be read as *if*, or *is implied by*.
 
-* The part on the left of the __:-__ is called the 'head' of the rule, and the part on the right
+* The part on the left of the __:-__ is called the *head* of the rule, and the part on the right
   is called the *body* of the rule.
 
 * So in general, if the body of the rule is true, then the head of the rule is true too.

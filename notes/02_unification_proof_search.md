@@ -30,7 +30,6 @@ Chapter 2 - Unification and Proof Search
 >Two terms unify if they are the same term or if they contain variables that can be uniformly
 >instantiated with terms in such a way that the resulting terms are equal.
 
-
 * So the terms __mia__ and __mia__ unify, because they are the same atom.
 
 * The terms 42 and 42 unify, because they are the same number.
