@@ -128,8 +128,8 @@ Here, though we've not explicitly recorded the fact that mia playsAirGuitar, Pro
     true.
 ```
 
-Here we know happy(yolanda) as a fact, and that listens2Music(yolanda) follows from this, and
-that playsAirGuitar(yolanda) follows from listens2Music(yolanda).
+Here we know __happy(yolanda)__ as a fact, and that __listens2Music(yolanda)__ follows from
+this, and that __playsAirGuitar(yolanda)__ follows from __listens2Music(yolanda)__.
 
 * In general:- any fact produced by an application of modus ponens can be used as inputs to
   further rules.
@@ -137,9 +137,9 @@ that playsAirGuitar(yolanda) follows from listens2Music(yolanda).
 * By chaining together applications of modus ponens in this way, Prolog can retrieve
   information which logically follows from the rules and facts recorded in the knowledge base.
 
-* The happy predicate is defined using a single clause (a fact). The listens2Music and
-  playsAirGuitar predicates are formed of two clauses each (comprised of one fact + one rule
-  and two rules respectively.)
+* The __happy__ predicate is defined using a single clause (a fact). The __listens2Music__ and
+  __playsAirGuitar__ predicates are formed of two clauses each (comprised of one fact + one
+  rule and two rules respectively.)
 
 * We can view a fact as a rule with an empty body - facts can be considered to be conditions
   without antecedent conditions, or *degenerate rules*.
