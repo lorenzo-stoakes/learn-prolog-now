@@ -333,7 +333,7 @@ predefined meaning e.g. __;__, __:-__.
     [A-Z][a-zA-Z0-9_]*
 ```
 
-* The _____ variable, the anonymous variable, is special. We discuss it later.
+* The **_** variable, the anonymous variable, is special. We discuss it later.
 
 * *Complex terms* or *structures* are built out of a *functor* followed by a sequence of
    arguments. We've seen this already, e.g. __listens2Music(mia)__.
