@@ -118,7 +118,7 @@ can infer head.
     true.
 ```
 
-Here, though we've not explicitly recorded the fact that __mia__ __playsAirGuitar__, Prolog has
+Here, though we've not explicitly recorded thef act that __mia__ __playsAirGuitar__, Prolog has
 *inferred* that this is the case, as we have specified __listens2Music(mia)__ as a fact.
 
 * Prolog can chain together uses of modus ponens:-
@@ -333,7 +333,7 @@ predefined meaning e.g. __;__, __:-__.
     [A-Z][a-zA-Z0-9_]*
 ```
 
-* The __\___ variable, the anonymous variable, is special. We discuss it later.
+* The _____ variable, the anonymous variable, is special. We discuss it later.
 
 * *Complex terms* or *structures* are built out of a *functor* followed by a sequence of
    arguments. We've seen this already, e.g. __listens2Music(mia)__.
