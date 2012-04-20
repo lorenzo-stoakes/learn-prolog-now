@@ -260,7 +260,7 @@ Note that, due to modus ponens:-
     X = yolanda.
 ```
 
-Here we're typing __; each__ time a result is returned by swipl.
+Here we're typing __;__ each time a result is returned by swipl.
 
 * Let's try something more complicated:-
 
