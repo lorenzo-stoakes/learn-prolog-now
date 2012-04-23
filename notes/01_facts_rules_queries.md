@@ -366,13 +366,13 @@ __father(father(father(butch)))__.
     playsAirGuitar/1
 ```
 
-* Can obtain a listing of code using the following command:-
+* We can obtain a listing of code using the following command:-
 
 ```prolog
     listing.
 ```
 
-* Can get all listing relating to a predicate by using a command like:-
+* We can get all listing relating to a predicate by using a command like:-
 
 ```prolog
     listing(listens2Music).
