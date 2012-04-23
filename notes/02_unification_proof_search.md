@@ -76,9 +76,9 @@ and we say they share values.)
 
 3. If __term1__ and __term2__ are complex terms, then they unify if and only if they have the
 same functor and arity, and all their corresponding arguments unify, and the variable
-instantiations are compatible (for example, it is not possible to instantiate variable X to mia
-when unifying one pair of arguments, and to instantiate __X__ to __vincent__ when unifying
-another pair of arguments.)
+instantiations are compatible (for example, it is not possible to instantiate variable __X__ to
+__mia__ when unifying one pair of arguments, and to instantiate __X__ to __vincent__ when
+unifying another pair of arguments.)
 
 4. Two terms unify if and only if it follows from the previous three points that they unify.
 
